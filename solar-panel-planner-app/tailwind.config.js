@@ -45,6 +45,9 @@ module.exports = {
         // background: "var(--background)",
         // foreground: "var(--foreground)",
       },
+      backgroundImage: {
+        bannerImg: "url('/solar_bg.jpg)"
+      },
     },
   },
   plugins: [],
