@@ -2,7 +2,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <header className="bg-white shadow-sm px-4 py-2">
+    <header className="bg-white shadow-sm px-4 lg:px-8 py-4">
       <nav className="flex justify-between">
         <h1 className="tracking-tighter bg-gradient-to-r from-orange-800 via-orange-500 to-orange-900 bg-clip-text text-transparent font-extrabold text-2xl ">
           ⚡️ BrightGrid
