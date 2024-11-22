@@ -2,8 +2,14 @@
 import React from "react";
 import PrimaryBtn from "../buttons/PrimaryBtn";
 import OutlinedBtn from "../buttons/OutlinedBtn";
+import { useRouter } from "next/router";
 
 const HeroSection = () => {
+  const router = useRouter();
+  const handleNewRequest = () => {
+    router.push('/new-request')
+  };
+
   return (
     <div className="relative w-full h-[60vh] bg-bannerImg bg-cover bg-center">
       <div className="absolute inset-0 bg-black bg-opacity-70"></div>
