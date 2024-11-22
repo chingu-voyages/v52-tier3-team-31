@@ -10,7 +10,57 @@
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .hero-heading {
+    @apply text-[80px] font-extrabold text-white;
   }
+
+  .hero-subheading {
+    @apply text-[30px] font-bold text-white;
+  }
+
+  .section-heading {
+    @apply text-4xl text-center mb-10 text-white;
+  }
+
+  .page-heading {
+    @apply text-4xl text-center mb-10 text-white;
+  }
+
+  .page-subheading {
+    @apply text-xl text-center my-4 text-white;
+  }
+
+  .form-section {
+    @apply bg-gray-100 rounded-2xl shadow-sm border-2 border-gray-200 p-8;
+  }
+
+  .form-label {
+    @apply block text-gray-800 font-semibold text-sm;
+  }
+
+  .form-field {
+    @apply block w-56 rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800;
+  }
+
+  .form-field-error {
+    @apply block w-56 rounded-md py-1.5 px-2 ring-1 ring-inset ring-red-600 focus:text-gray-800;
+  }
+
+  .btn-outline {
+  }
+
+  .btn-primary {
+    @apply w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer relative overflow-hidden transition-all duration-500 ease-in-out shadow-md hover:scale-105 hover:shadow-lg before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-orange-400 before:to-orange-600   before:transition-all before:duration-500 before:ease-in-out before:z-[-1] before:rounded-xl hover:before:left-0 text-[#fff] font-bold;
+  }
+
+  /* btn-submit
+btn-reset
+btn-edit
+btn-cancel
+btn-new-request
+btn-manage-request
+btn-list-view
+btn-map-view
+btn-plan-visits
+btn-export */
 }
