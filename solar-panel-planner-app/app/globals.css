@@ -19,15 +19,15 @@
   }
 
   .section-heading {
-    @apply text-4xl text-center mb-10 text-white;
+    @apply text-4xl text-center mb-10 text-black;
   }
 
   .page-heading {
-    @apply text-4xl text-center mb-10 text-white;
+    @apply text-4xl text-center mb-10 text-black;
   }
 
   .page-subheading {
-    @apply text-xl text-center my-4 text-white;
+    @apply text-xl text-center my-4 text-black;
   }
 
   .form-section {
