@@ -31,15 +31,19 @@
   }
 
   .form-section {
-    @apply bg-gray-100 rounded-2xl shadow-sm border-2 border-gray-200 p-8;
+    @apply bg-gray-100 rounded-2xl shadow-sm border-2 border-gray-200 p-8 my-5;
+  }
+
+  .form-box{
+    @apply mb-5;
   }
 
   .form-label {
-    @apply block text-gray-800 font-semibold text-sm;
+    @apply block text-gray-800 font-semibold text-sm mb-2;
   }
 
   .form-field {
-    @apply block w-56 rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800;
+    @apply w-full block rounded-md py-1.5 px-2 ring-1 ring-inset ring-gray-400 focus:text-gray-800;
   }
 
   .form-field-error {
