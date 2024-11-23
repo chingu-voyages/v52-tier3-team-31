@@ -19,11 +19,11 @@
   }
 
   .section-heading {
-    @apply text-4xl text-center mb-10 text-black;
+    @apply text-4xl text-center mb-8 text-black tracking-tighter font-bold;
   }
 
   .page-heading {
-    @apply text-4xl text-center mb-10 text-black;
+    @apply text-4xl text-center my-8 text-black tracking-tighter font-bold;
   }
 
   .page-subheading {
