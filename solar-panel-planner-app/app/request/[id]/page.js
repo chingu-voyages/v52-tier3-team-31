@@ -11,7 +11,7 @@ const page = async ({ params }) => {
     <div>
       <h1 className="page-heading">Request Details</h1>
       {request && request.data ? (
-        <div className="flex flex-col gap-2 w-screen justify-center md:px-20 lg:px-40 xl:px-80">
+        <div className="flex flex-col  w-screen justify-center md:px-20 lg:px-40 xl:px-80">
           <div className="flex flex-col gap-2 sm:flex-row">
             <dl className="form-section flex flex-col gap-8 justify-center text-center">
               <div>
@@ -36,7 +36,7 @@ const page = async ({ params }) => {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-2 my-4 justify-center  ">
+          <div className="flex flex-col sm:flex-row gap-2 my-4 justify-between  ">
             <div className="form-section text-center flex-col justify-center">
               <div className=" flex flex-col sm:flex-row gap-4">
                 <div>

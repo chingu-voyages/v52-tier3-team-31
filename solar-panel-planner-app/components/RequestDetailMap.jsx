@@ -6,7 +6,7 @@ const RequestDetailMap = ({ address }) => {
   return (
     <div>
       <iframe
-        className="relative h-96 w-full rounded-lg"
+        className="relative h-96 w-full rounded-2xl"
         loading="lazy"
         src={src}
       ></iframe>
