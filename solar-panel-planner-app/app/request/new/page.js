@@ -1,5 +1,6 @@
 "use client";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
+import DateSelector from "@/components/newRequst/DateSelector";
 import React, { useState } from "react";
 
 const Request = () => {
@@ -106,18 +107,30 @@ const Request = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleSlotSelect = (seletedTime) => {
+    
+    setFormData((prev) => ({
+        ...prev,
+        requestedDate: seletedTime
+    }))
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const isValid = validateFields(); 
 
-    if (validateFields()) {
+    if (isValid) {
       try {
-        const newRequest = new FormData();
 
-        newRequest.set("name", formData.name);
-        newRequest.set("email", formData.email);
-        newRequest.set("phone", formData.phone);
-        newRequest.set("address", formData.address);
-        newRequest.set("requestedData", formData.requestedDate);
+        console.log(formData)
+        // const newRequest = new FormData();
+
+        // newRequest.set("name", formData.name);
+        // newRequest.set("email", formData.email);
+        // newRequest.set("phone", formData.phone);
+        // newRequest.set("address", formData.address);
+        // newRequest.set("requestedData", formData.requestedDate);
 
         // const response = await fetch("/api/requests", {
         //   method: "POST",
@@ -134,6 +147,7 @@ const Request = () => {
         // }
       } catch (err) {
         setErrorMessage("An error occurred while submitting the request.");
+        console.error(err);
       }
     } else {
       setErrorMessage("Please correct the errors before submitting.");
@@ -245,7 +259,7 @@ const Request = () => {
         </div>
         <div className="form-section form-box">
           <p className="form-label">Preferred Timeslot</p>
-          <div className="flex gap-3">
+          {/* <div className="flex gap-3">
             <input
               type="date"
               name="requestedDate"
@@ -254,7 +268,9 @@ const Request = () => {
             />
             <div>Time</div>
             {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
-          </div>
+          </div> */}
+          <DateSelector handleSlotSelect={handleSlotSelect}/>
+          {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
         </div>
         <div>
           <PrimaryBtn text={"Submit"} />
