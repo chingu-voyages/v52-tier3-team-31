@@ -106,14 +106,35 @@ const Request = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateFields()) {
-      console.log(formData);
-      setSuccessMessage("Your request has been submitted successfully.");
-      setErrorMessage("");
-      handleReset();
+      try {
+        const newRequest = new FormData();
+
+        newRequest.set("name", formData.name);
+        newRequest.set("email", formData.email);
+        newRequest.set("phone", formData.phone);
+        newRequest.set("address", formData.address);
+        newRequest.set("requestedData", formData.requestedDate);
+
+        // const response = await fetch("/api/requests", {
+        //   method: "POST",
+        //   body: requestData,
+        // });
+        // const result = await response.json();
+
+        // if (response.ok) {
+        //   setSuccessMessage("Your request has been submitted successfully.");
+        //   setErrorMessage("");
+        //   handleReset();
+        // } else {
+        //   setErrorMessage(result.error || "Failed to submit your request.");
+        // }
+      } catch (err) {
+        setErrorMessage("An error occurred while submitting the request.");
+      }
     } else {
       setErrorMessage("Please correct the errors before submitting.");
       setSuccessMessage("");
@@ -232,9 +253,7 @@ const Request = () => {
               onChange={handleFormChange}
             />
             <div>Time</div>
-            {errors.requestedDate && (
-              <p className="">{errors.requestedDate}</p>
-            )}
+            {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
           </div>
         </div>
         <div>
