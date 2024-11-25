@@ -7,6 +7,8 @@ const RequestSchema = new Schema(
     phone: { type: String, required: true },
     email: { type: String, required: true },
     address: { type: String, required: true },
+    lat: { type: String, required: true },
+    long: { type: String, required: true },
     requestedDate: { type: Date, required: true },
     status: {
       type: String,
