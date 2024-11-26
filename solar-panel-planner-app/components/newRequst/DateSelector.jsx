@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
 
-const DateSelector = ({handleSlotSelect}) => {
+const DateSelector = ({onDateSlotConfirm}) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedSlot, setSelectedSlot] = useState(null);
 
@@ -20,11 +20,14 @@ const DateSelector = ({handleSlotSelect}) => {
   const handleSelectedSlot = (slot) =>{
     setSelectedSlot(slot);
   
-    const formattedDateTime = `${selectedDate} ${slot.start}`;
-    const seletedTime = dayjs(formattedDateTime).format(
-        "MM/DD/YYYY h:mm A"
-      );
-      handleSlotSelect(seletedTime)
+    // const formattedDateTime = `${selectedDate} ${slot.start}`;
+    // const seletedTime = dayjs(formattedDateTime).format(
+    //     "MM/DD/YYYY h:mm A"
+    //   );
+
+      if(onDateSlotConfirm){
+        onDateSlotConfirm(selectedDate, slot)
+      }
   }
 
   const todaysDate = dayjs().format("YYYY-MM-DD");
@@ -36,9 +39,9 @@ const DateSelector = ({handleSlotSelect}) => {
       {selectedDate && (
         <div>
           <h3>Available Time Slots:</h3>
-          <div>
+          <div className="flex flex-wrap">
             {timeSlots.map((slot) => (
-              <button
+              <div
                 key={slot.start}
                 onClick={() => handleSelectedSlot(slot)}
                 style={{
@@ -48,10 +51,11 @@ const DateSelector = ({handleSlotSelect}) => {
                   color: "white",
                   border: "none",
                   cursor: "pointer",
+                  width: '175px'
                 }}
               >
                 {slot.label}
-              </button>
+              </div>
             ))}
           </div>
         </div>

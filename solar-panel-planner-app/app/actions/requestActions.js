@@ -16,6 +16,7 @@ const sampleRequest = new Request({
   confirmationEmailSent: false,
 });
 
+// Create a new request using the form data
 export async function createRequest(formData) {
   try {
     const {name, phone, email, address, requestedDate} = formData

@@ -1,41 +1,34 @@
 "use client";
 import { createRequest } from "@/app/actions/requestActions";
-import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import DateSelector from "@/components/newRequst/DateSelector";
 import React, { useState } from "react";
 
+const initialFormData = {
+  name: "",
+  email: "",
+  phone: "",
+  address: "",
+  requestedDate: "",
+};
+
+const initialAddressFields = {
+  address1: "",
+  address2: "",
+  city: "",
+  state: "",
+  zip: "",
+};
+
 const Request = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    requestedDate: "",
-  });
-  const [addressFields, setAddressFields] = useState({
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
-  });
+  const [formData, setFormData] = useState(initialFormData);
+  const [addressFields, setAddressFields] = useState(initialAddressFields);
+  const [selectedDateSlot, setSelectedDateSlot] = useState(null);
   const [errors, setErrors] = useState({});
 
   const handleReset = () => {
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-      requestedDate: "",
-    });
-    setAddressFields({
-      address1: "",
-      address2: "",
-      city: "",
-      state: "",
-      zip: "",
-    });
+    setFormData(initialFormData);
+    setAddressFields(initialAddressFields);
+    setSelectedDateSlot(null);
     setErrors({});
   };
 
@@ -48,11 +41,6 @@ const Request = () => {
       setAddressFields((prev) => ({
         ...prev,
         [addressField]: value,
-      }));
-
-      setFormData((prev) => ({
-        ...prev,
-        address: `${addressFields.address1} ${addressFields.address2} ${addressFields.city}, ${addressFields.state}, ${addressFields.zip}`,
       }));
     } else {
       setFormData((prev) => ({
@@ -96,32 +84,34 @@ const Request = () => {
       newErrors.zip = "ZIP Code is required.";
     }
 
-    if (!formData.requestedDate.trim()) {
-      newErrors.requestedDate = "Preferred date is required.";
+    if (!selectedDateSlot) {
+      newErrors.requestedDate = "Preferred date and time slot are required.";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSlotSelect = (seletedTime) => {
-    setFormData((prev) => ({
-      ...prev,
-      requestedDate: seletedTime,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const fullAddress = `${addressFields.address1} ${addressFields.address2} ${addressFields.city}, ${addressFields.state}, ${addressFields.zip}`;
+    const updatedFormData = {
+      ...formData,
+      address: fullAddress,
+      requestedDate: selectedDateSlot,
+    };
+
     const isValid = validateFields();
 
     if (isValid) {
-      try{
-         const response = await createRequest(formData);
-         console.log(response)
-         handleReset();
-      }catch(error){
-         console.log('Failed to create request', error.message);
+      try {
+        console.log(updatedFormData);
+        const response = await createRequest(updatedFormData);
+        console.log(response);
+        handleReset();
+      } catch (error) {
+        console.log("Failed to create request", error.message);
       }
     }
   };
@@ -230,11 +220,16 @@ const Request = () => {
         </div>
         <div className="form-section form-box">
           <p className="form-label">Preferred Timeslot</p>
-          <DateSelector handleSlotSelect={handleSlotSelect} />
+          <DateSelector
+            onDateSlotConfirm={(selectedDate, selectedSlot) => {
+              const formattedSlot = `${selectedDate} ${selectedSlot.start}`;
+              setSelectedDateSlot(formattedSlot);
+            }}
+          />
           {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
         </div>
         <div>
-          <PrimaryBtn text={"Submit"} />
+          <button type="submit">Submit</button>
           <button type="button">Reset</button>
         </div>
       </form>
