@@ -1,6 +1,7 @@
 import React from "react";
 import RequestList from "@/components/request/RequestList";
-const page = () => {
+
+const page = async () => {
   return (
     <div>
       <RequestList />
