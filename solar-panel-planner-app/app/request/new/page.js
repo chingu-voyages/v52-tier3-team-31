@@ -1,4 +1,5 @@
 "use client";
+import { createRequest } from "@/app/actions/requestActions";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import DateSelector from "@/components/newRequst/DateSelector";
 import React, { useState } from "react";
@@ -19,8 +20,6 @@ const Request = () => {
     zip: "",
   });
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleReset = () => {
     setFormData({
@@ -38,8 +37,6 @@ const Request = () => {
       zip: "",
     });
     setErrors({});
-    setSuccessMessage("");
-    setErrorMessage("");
   };
 
   const handleFormChange = (e) => {
@@ -108,50 +105,24 @@ const Request = () => {
   };
 
   const handleSlotSelect = (seletedTime) => {
-    
     setFormData((prev) => ({
-        ...prev,
-        requestedDate: seletedTime
-    }))
+      ...prev,
+      requestedDate: seletedTime,
+    }));
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isValid = validateFields(); 
+    const isValid = validateFields();
 
     if (isValid) {
-      try {
-
-        console.log(formData)
-        // const newRequest = new FormData();
-
-        // newRequest.set("name", formData.name);
-        // newRequest.set("email", formData.email);
-        // newRequest.set("phone", formData.phone);
-        // newRequest.set("address", formData.address);
-        // newRequest.set("requestedData", formData.requestedDate);
-
-        // const response = await fetch("/api/requests", {
-        //   method: "POST",
-        //   body: requestData,
-        // });
-        // const result = await response.json();
-
-        // if (response.ok) {
-        //   setSuccessMessage("Your request has been submitted successfully.");
-        //   setErrorMessage("");
-        //   handleReset();
-        // } else {
-        //   setErrorMessage(result.error || "Failed to submit your request.");
-        // }
-      } catch (err) {
-        setErrorMessage("An error occurred while submitting the request.");
-        console.error(err);
+      try{
+         const response = await createRequest(formData);
+         console.log(response)
+         handleReset();
+      }catch(error){
+         console.log('Failed to create request', error.message);
       }
-    } else {
-      setErrorMessage("Please correct the errors before submitting.");
-      setSuccessMessage("");
     }
   };
 
@@ -259,17 +230,7 @@ const Request = () => {
         </div>
         <div className="form-section form-box">
           <p className="form-label">Preferred Timeslot</p>
-          {/* <div className="flex gap-3">
-            <input
-              type="date"
-              name="requestedDate"
-              value={formData.requestedDate}
-              onChange={handleFormChange}
-            />
-            <div>Time</div>
-            {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
-          </div> */}
-          <DateSelector handleSlotSelect={handleSlotSelect}/>
+          <DateSelector handleSlotSelect={handleSlotSelect} />
           {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
         </div>
         <div>

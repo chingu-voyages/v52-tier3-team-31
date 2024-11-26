@@ -16,14 +16,9 @@ const sampleRequest = new Request({
   confirmationEmailSent: false,
 });
 
-// Create a new request using the form data
 export async function createRequest(formData) {
   try {
-    const name = formData.get("name");
-    const phone = formData.get("phone");
-    const email = formData.get("email");
-    const address = formData.get("address");
-    const requestedDate = formData.get("requestedDate");
+    const {name, phone, email, address, requestedDate} = formData
     const scheduledDate = requestedDate;
 
     const request = new Request({

@@ -57,7 +57,6 @@ const DateSelector = ({handleSlotSelect}) => {
         </div>
       )}
 
-      {/* Confirm Selection */}
       {selectedSlot && (
         <div>
           <h4>
