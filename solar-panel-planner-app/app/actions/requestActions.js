@@ -110,9 +110,7 @@ export async function fetchFilteredRequests(searchTerm, currentPage, perPage) {
     console.log(
       `Search Term : ${searchTerm}\nCurrentPage: ${currentPage}\nPerPage : ${perPage}\nTotalResults : ${totalResults.length}\nLimitedResults:${results.length}`
     );
-    // results.map((request) => {
-    //   console.log(`Name: ${request.name}`);
-    // });
+
     return results;
   } catch (error) {
     console.log(error);

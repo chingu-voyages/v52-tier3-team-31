@@ -1,4 +1,6 @@
-const statusColors = {
+import Link from "next/link";
+
+const borderStatusColors = {
   new: "border-status-new",
   scheduled: "border-status-scheduled",
   cancelled: "border-status-cancelled",
@@ -10,10 +12,10 @@ const RequestCard = ({ request }) => {
     request;
 
   return (
-    <div
-      className={`overflow-hidden rounded-lg bg-white shadow-md border-2 ${statusColors[status]} transition-transform hover:scale-105`}
+    <Link
+      href={`/request/${request._id}`}
+      className={`overflow-hidden rounded-lg bg-white shadow-sm border-2 ${borderStatusColors[status]} transition-transform hover:scale-105`}
     >
-      {/* Header */}
       <div className="px-5 py-4 border-b bg-gray-50 flex justify-between items-center">
         <div className="flex items-center gap-2 text-lg font-semibold">
           📅 <span>{scheduledDate.toLocaleString()}</span>
@@ -55,7 +57,7 @@ const RequestCard = ({ request }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

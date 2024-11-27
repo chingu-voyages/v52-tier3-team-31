@@ -19,7 +19,7 @@ const RequestList = async ({ query, currentPage, limit }) => {
     <div>
       {filteredRequests ? (
         <>
-          <div className="grid md:grid-cols-3 gap-4 bg-gray-50 px-20 py-8">
+          <div className="grid lg:grid-cols-2 gap-4 px-4 md:px-28 py-8">
             {filteredRequests.map((request) => (
               <RequestCard key={request._id} request={request} />
             ))}
