@@ -91,18 +91,28 @@ export async function updateRequestStatus(requestId, status) {
   }
 }
 
-export async function search(searchTerm) {
-  const query = {
-    $or: [
-      { name: { $regex: searchTerm, $options: "i" } },
-      { email: { $regex: searchTerm, $options: "i" } },
-      { phone: { $regex: searchTerm, $options: "i" } },
-      { address: { $regex: searchTerm, $options: "i" } },
-    ],
-  };
+export async function fetchFilteredRequests(searchTerm, currentPage, perPage) {
+  const offset = (currentPage - 1) * perPage;
+  let query = {};
+  if (searchTerm.trim() !== "") {
+    query = {
+      $or: [
+        { name: { $regex: searchTerm, $options: "i" } },
+        { email: { $regex: searchTerm, $options: "i" } },
+        { phone: { $regex: searchTerm, $options: "i" } },
+        { address: { $regex: searchTerm, $options: "i" } },
+      ],
+    };
+  }
   try {
-    let results = await Request.find(query);
-    console.log(`Search results: ${results.length}`);
+    let totalResults = await Request.find(query);
+    let results = await Request.find(query).skip(offset).limit(perPage);
+    console.log(
+      `Search Term : ${searchTerm}\nCurrentPage: ${currentPage}\nPerPage : ${perPage}\nTotalResults : ${totalResults.length}\nLimitedResults:${results.length}`
+    );
+    // results.map((request) => {
+    //   console.log(`Name: ${request.name}`);
+    // });
     return results;
   } catch (error) {
     console.log(error);
