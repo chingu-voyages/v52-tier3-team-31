@@ -90,3 +90,20 @@ export async function updateRequestStatus(requestId, status) {
     return { error: error.message };
   }
 }
+
+
+export async function getAllPlanVisitRequests() {
+  try {
+    let requests = await Request.find();
+    requests = requests.filter((request)=>{
+      return request.status === 'new' || request.status === 'scheduled'
+    })
+    if (requests.length > 0) {
+      return { data: requests };
+    } else {
+      return { data: [], error: "No requests found" };
+    }
+  } catch (error) {
+    return { error: error.message };
+  }
+}

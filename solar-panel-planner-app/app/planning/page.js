@@ -1,37 +1,58 @@
-"use client"
+"use client";
 import DateView from "@/components/planning/DateView";
+import dayjs from "dayjs";
 import PlanningCards from "@/components/planning/PlanningCards";
-import React, { useState } from "react";
-const dates = [1, 2, 3, 4, 5];
+import React, { useEffect, useState } from "react";
+import { getAllPlanVisitRequests } from "../actions/requestActions";
+import PlanningHeader from "@/components/planning/PlanningHeader";
+import Dropdown from "@/components/planning/Dropdown";
 
 const Planning = () => {
-  const [selectedDate, setSelectedDate] = useState(10);
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs().format("MM/DD/YYYY")
+  );
+  const [allPlannedRequests, setAllPlannedRequest] = useState([]);
+
+  useEffect(() => {
+    const getAllRequestsData = async () => {
+      const allRequest = await getAllPlanVisitRequests();
+      const filtered = allRequest.data.filter((request) => {
+        const requestedDate = dayjs(request.requestedDate).format("MM/DD/YYYY");
+        return requestedDate === selectedDate;
+      });
+      setAllPlannedRequest(filtered);
+    };
+    getAllRequestsData();
+  }, [selectedDate]);
+
+  const generateDates = () => {
+    const dates = [];
+    for (let i = 0; i < 30; i++) {
+      dates.push(dayjs().add(i, "day"));
+    }
+    return dates;
+  };
+  const [dates] = useState(generateDates());
+
   return (
     <div>
-      <h1 className="section-heading mt-5">Planning View</h1>
+      <div className="flex justify-between items-center sm:justify-center">
+        <h1 className="section-heading mt-5">Planning View</h1>
+        <div className="block sm:hidden">
+          <Dropdown
+            dates={dates}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+          />
+        </div>
+      </div>
       <div className="flex gap-20">
-        <DateView dates={dates} setSelectedDate={setSelectedDate} />
-        <div className="bg-slate-500 sm:w-[calc(100%-20%)]">
-          <div className="flex justify-between">
-            <div>
-              <h3>Visit Schedule</h3>
-              <div>{selectedDate} November</div>
-            </div>
-            <div>
-              <div className="flex gap-2">
-                <p>View As</p>
-                <button>Map</button>
-              </div>
-              <div className="flex gap-2">
-                <p>Export</p>
-                <div>
-                  <button>PDF</button>
-                  <button>XLSX</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <PlanningCards />
+        <div className="hidden sm:block sm:w-[20%]">
+          <DateView setSelectedDate={setSelectedDate} dates={dates} />
+        </div>
+        <div className="bg-slate-500 w-[100%] sm:w-[calc(100%-20%)]">
+          <PlanningHeader selectedDate={selectedDate} />
+          <PlanningCards allPlannedRequests={allPlannedRequests} />
         </div>
       </div>
     </div>
