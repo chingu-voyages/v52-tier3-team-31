@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.4.0",
+    "axios": "^1.7.8",
     "dayjs": "^1.11.13",
     "mongoose": "^8.8.1",
     "next": "^14.2.17",
