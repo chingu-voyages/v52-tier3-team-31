@@ -105,13 +105,15 @@ export async function fetchFilteredRequests(searchTerm, currentPage, perPage) {
     };
   }
   try {
-    let totalResults = await Request.find(query);
+    let totalResults = await Request.find(query).countDocuments();
     let results = await Request.find(query).skip(offset).limit(perPage);
     console.log(
-      `Search Term : ${searchTerm}\nCurrentPage: ${currentPage}\nPerPage : ${perPage}\nTotalResults : ${totalResults.length}\nLimitedResults:${results.length}`
+      `Search Term : ${searchTerm}\nCurrentPage: ${currentPage}\nPerPage : ${perPage}\nTotalResults : ${totalResults}\nLimitedResults:${results.length}`
     );
-
-    return results;
+    return {
+      totalResults: totalResults,
+      data: results,
+    };
   } catch (error) {
     console.log(error);
     return { error: error.message };
