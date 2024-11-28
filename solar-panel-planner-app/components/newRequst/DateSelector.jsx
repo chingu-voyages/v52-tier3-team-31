@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
 
-const DateSelector = ({onDateSlotConfirm}) => {
+const DateSelector = ({ onDateSlotConfirm }) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedSlot, setSelectedSlot] = useState(null);
 
@@ -17,24 +17,24 @@ const DateSelector = ({onDateSlotConfirm}) => {
     setSelectedDate(e.target.value);
   };
 
-  const handleSelectedSlot = (slot) =>{
+  const handleSelectedSlot = (slot) => {
     setSelectedSlot(slot);
-  
-    // const formattedDateTime = `${selectedDate} ${slot.start}`;
-    // const seletedTime = dayjs(formattedDateTime).format(
-    //     "MM/DD/YYYY h:mm A"
-    //   );
 
-      if(onDateSlotConfirm){
-        onDateSlotConfirm(selectedDate, slot)
-      }
-  }
+    if (onDateSlotConfirm) {
+      onDateSlotConfirm(selectedDate, slot);
+    }
+  };
 
   const todaysDate = dayjs().format("YYYY-MM-DD");
 
   return (
     <div>
-      <input type="date" value={selectedDate} onChange={handleDateChange} min={todaysDate} />
+      <input
+        type="date"
+        value={selectedDate}
+        onChange={handleDateChange}
+        min={todaysDate}
+      />
 
       {selectedDate && (
         <div>
@@ -47,11 +47,12 @@ const DateSelector = ({onDateSlotConfirm}) => {
                 style={{
                   margin: "5px",
                   padding: "10px",
-                  backgroundColor: selectedSlot?.start === slot.start ? "green" : "gray",
+                  backgroundColor:
+                    selectedSlot?.start === slot.start ? "green" : "gray",
                   color: "white",
                   border: "none",
                   cursor: "pointer",
-                  width: '175px'
+                  width: "175px",
                 }}
               >
                 {slot.label}
@@ -67,7 +68,8 @@ const DateSelector = ({onDateSlotConfirm}) => {
             Selected Slot: {""}
             {
               timeSlots.find((slot) => slot.start === selectedSlot.start)?.label
-            } on {dayjs(selectedDate.start).format("MM/DD/YYYY")}
+            }{" "}
+            on {dayjs(selectedDate.start).format("MM/DD/YYYY")}
           </h4>
         </div>
       )}

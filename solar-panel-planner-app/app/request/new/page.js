@@ -202,9 +202,9 @@ const Request = () => {
           />
           {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
         </div>
-        <div>
-          <button type="submit">Submit</button>
-          <button type="button">Reset</button>
+        <div className="flex gap-5">
+          <button className="btn-primary" type="submit">Submit</button>
+          <button className="btn-outline" type="button" onClick={handleReset}>Reset</button>
         </div>
       </form>
     </div>
