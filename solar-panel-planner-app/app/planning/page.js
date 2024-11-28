@@ -35,7 +35,7 @@ const Planning = () => {
   const [dates] = useState(generateDates());
 
   return (
-    <div>
+    <div className="max-w-[1000px] mx-auto">
       <div className="flex justify-between items-center sm:justify-center">
         <h1 className="section-heading mt-5">Planning View</h1>
         <div className="block sm:hidden">
@@ -48,7 +48,7 @@ const Planning = () => {
       </div>
       <div className="flex gap-20">
         <div className="hidden sm:block sm:w-[20%]">
-          <DateView setSelectedDate={setSelectedDate} dates={dates} />
+          <DateView selectedDate={selectedDate} setSelectedDate={setSelectedDate} dates={dates} />
         </div>
         <div className="bg-slate-500 w-[100%] sm:w-[calc(100%-20%)]">
           <PlanningHeader selectedDate={selectedDate} />
