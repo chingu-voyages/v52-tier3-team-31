@@ -1,24 +1,38 @@
 import React from "react";
-import { getAllRequests } from "@/app/actions/requestActions";
 import RequestCard from "./RequestCard";
+import { fetchFilteredRequests } from "@/app/actions/requestActions";
+import Pagination from "../Pagination";
 
-const RequestList = async () => {
-  const requests = await getAllRequests();
+const RequestList = async ({ query, currentPage, limit }) => {
+  const filteredRequests = await fetchFilteredRequests(
+    query,
+    currentPage,
+    limit
+  );
+
+  if (!filteredRequests || filteredRequests.data.length === 0) {
+    return <h1 className="text-lg text-center">🥹 No requests found</h1>;
+  }
+
+  const totalPages = Math.ceil(filteredRequests.totalResults / limit);
 
   return (
     <div>
-      <h1 className="page-heading align">All Requests</h1>
-      {requests && requests.data ? (
+      {filteredRequests.data && (
         <>
-          <div className="grid md:grid-cols-3 gap-4 bg-gray-50 px-20 py-8">
-            {requests.data.map((request) => (
+          {query != "" && (
+            <h1 className="text-lg text-center">
+              Found <strong>{filteredRequests.totalResults}</strong>{" "}
+              {filteredRequests.totalResults > 1 ? "results " : "result "}
+              for "<strong>{query}</strong>"
+            </h1>
+          )}
+          <div className="grid lg:grid-cols-2 gap-4 px-4 md:px-28 py-8">
+            {filteredRequests.data.map((request) => (
               <RequestCard key={request._id} request={request} />
             ))}
           </div>
-        </>
-      ) : (
-        <>
-          <h1>No requests found </h1>
+          {totalPages > 0 && <Pagination totalPages={totalPages} />}
         </>
       )}
     </div>
