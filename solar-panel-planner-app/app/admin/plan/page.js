@@ -3,9 +3,9 @@ import DateView from "@/components/planning/DateView";
 import dayjs from "dayjs";
 import PlanningCards from "@/components/planning/PlanningCards";
 import React, { useEffect, useState } from "react";
-import { getAllPlanVisitRequests } from "../actions/requestActions";
 import PlanningHeader from "@/components/planning/PlanningHeader";
 import Dropdown from "@/components/planning/Dropdown";
+import { getAllPlanVisitRequests } from "@/app/actions/requestActions";
 
 const Planning = () => {
   const [selectedDate, setSelectedDate] = useState(

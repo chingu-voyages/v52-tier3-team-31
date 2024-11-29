@@ -104,6 +104,37 @@ export async function getAllPlanVisitRequests() {
       return { data: [], error: "No requests found" };
     }
   } catch (error) {
+    console.log(error);
+    return { error: error.message };
+  }
+}
+
+
+export async function fetchFilteredRequests(searchTerm, currentPage, perPage) {
+  const offset = (currentPage - 1) * perPage;
+  let query = {};
+  if (searchTerm.trim() !== "") {
+    query = {
+      $or: [
+        { name: { $regex: searchTerm, $options: "i" } },
+        { email: { $regex: searchTerm, $options: "i" } },
+        { phone: { $regex: searchTerm, $options: "i" } },
+        { address: { $regex: searchTerm, $options: "i" } },
+      ],
+    };
+  }
+  try {
+    let totalResults = await Request.find(query).countDocuments();
+    let results = await Request.find(query).skip(offset).limit(perPage);
+    console.log(
+      `Search Term : ${searchTerm}\nCurrentPage: ${currentPage}\nPerPage : ${perPage}\nTotalResults : ${totalResults}\nLimitedResults:${results.length}`
+    );
+    return {
+      totalResults: totalResults,
+      data: results,
+    };
+  } catch (error) {
+    console.log(error);
     return { error: error.message };
   }
 }

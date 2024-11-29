@@ -15,8 +15,11 @@ const Navbar = async () => {
           {session && session?.user ? (
             <>
               {console.log(`Session :${session}`)}
-              <Link href="/">
+              <Link href="/admin">
                 <span className="">💻 All Requests</span>
+              </Link>
+              <Link href="/admin/plan">
+                <span className="">🗺️ Plan Visits</span>
               </Link>
               <form
                 action={async () => {
