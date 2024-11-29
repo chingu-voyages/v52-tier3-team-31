@@ -9,6 +9,7 @@ const initialFormData = {
   email: "",
   phone: "",
   address: "",
+  location: {},
   requestedDate: "",
 };
 
@@ -119,6 +120,10 @@ const Request = () => {
     setFormData((prev) => ({
       ...prev,
       address: suggestion.formatted,
+      location: {
+        type: "Point",
+        coordinates: [suggestion.geometry.lat, suggestion.geometry.lng]
+      }
     }));
     setSuggestions([]);
   };

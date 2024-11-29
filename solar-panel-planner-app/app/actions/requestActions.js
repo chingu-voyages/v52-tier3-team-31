@@ -19,7 +19,7 @@ const sampleRequest = new Request({
 // Create a new request using the form data
 export async function createRequest(formData) {
   try {
-    const {name, phone, email, address, requestedDate} = formData
+    const {name, phone, email, address, location, requestedDate} = formData
     const scheduledDate = requestedDate;
 
     const request = new Request({
@@ -27,6 +27,7 @@ export async function createRequest(formData) {
       phone,
       email,
       address,
+      location,
       requestedDate,
       scheduledDate,
     });
