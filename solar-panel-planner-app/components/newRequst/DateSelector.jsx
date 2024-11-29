@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { getBookedTimeSlots } from "@/app/actions/planningActions";
 
 const DateSelector = ({ onDateSlotConfirm }) => {
+  const [bookedSlots, setBookedSlots] = useState({});
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedSlot, setSelectedSlot] = useState(null);
 
@@ -17,8 +20,30 @@ const DateSelector = ({ onDateSlotConfirm }) => {
     { label: "4:00 PM - 5:00 PM", start: "16:00", end: "17:00" },
   ];
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchBookedSlots = async () => {
+      try {
+        const slots = await getBookedTimeSlots();
+        if (isMounted) {
+          setBookedSlots(slots); 
+        }
+      } catch (error) {
+        console.error("Error fetching booked slots:", error);
+      }
+    };
+
+    fetchBookedSlots();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
+    setSelectedSlot(null);
   };
 
   const handleSelectedSlot = (slot) => {
@@ -30,6 +55,13 @@ const DateSelector = ({ onDateSlotConfirm }) => {
   };
 
   const todaysDate = dayjs().format("YYYY-MM-DD");
+
+
+  const isSlotBooked = (date, start) => {
+    const bookedHours = bookedSlots[dayjs(date).format("MM/DD/YYYY")] || [];
+    const startHour = parseInt(start.split(":")[0], 10); 
+    return bookedHours.includes(startHour);
+  };
 
   return (
     <div>
@@ -44,18 +76,23 @@ const DateSelector = ({ onDateSlotConfirm }) => {
         <div>
           <h3>Available Time Slots:</h3>
           <div className="flex flex-wrap">
-            {timeSlots.map((slot) => (
+            {timeSlots.map((slot, index) => (
               <div
                 key={slot.start}
-                onClick={() => handleSelectedSlot(slot)}
+                onClick={() => !isSlotBooked(selectedDate, slot.start) && handleSelectedSlot(slot)}
                 style={{
                   margin: "5px",
                   padding: "10px",
-                  backgroundColor:
-                    selectedSlot?.start === slot.start ? "green" : "gray",
+                  backgroundColor: isSlotBooked(selectedDate, slot.start)
+                  ? "red"
+                  : selectedSlot?.start === slot.start
+                  ? "green"
+                  : "gray",
                   color: "white",
                   border: "none",
-                  cursor: "pointer",
+                  cursor: isSlotBooked(selectedDate, slot.start)
+                    ? "not-allowed"
+                    : "pointer",
                   width: "170px",
                 }}
               >

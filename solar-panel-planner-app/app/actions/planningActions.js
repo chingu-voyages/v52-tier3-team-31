@@ -26,14 +26,12 @@ export async function getBookedTimeSlots() {
   scheduledDates.forEach((item) => {
     let date = dayjs(item.scheduledDate).format("MM/DD/YYYY");
     let hour = dayjs(item.scheduledDate).hour();
-    console.log(`Date : ${date} Hour : ${hour}`);
 
     let slot = timeSlots[date];
     slot.push(hour);
     // sort the array of hours in ascending order
     slot.sort((a, b) => a - b);
   });
-  console.log(timeSlots);
 
   return timeSlots;
 }
