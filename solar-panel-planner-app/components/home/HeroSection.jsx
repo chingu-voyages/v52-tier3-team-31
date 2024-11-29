@@ -11,6 +11,10 @@ const HeroSection = () => {
     router.push("/request/new");
   };
 
+  const handleManageRequest = () =>{
+    router.push("/planning")
+  }
+
   return (
     <div className="relative w-full h-[60vh] bg-bannerImg bg-cover bg-center">
       <div className="absolute inset-0 bg-black bg-opacity-70"></div>
@@ -29,7 +33,7 @@ const HeroSection = () => {
           <PrimaryBtn text="New Request" onClickFn={handleNewRequest} />
           <OutlinedBtn
             text="Mange Request"
-            onClickFn={() => console.log("button 2")}
+            onClickFn={handleManageRequest}
           />
         </div>
       </div>
