@@ -42,6 +42,7 @@ const Request = () => {
               key: process.env.NEXT_PUBLIC_OPENCAGE_API_KEY, 
               limit: 5,
               language: "en", 
+              bounds: "-118.668404,33.703652,-118.155289,34.337306",
             },
           }
         );

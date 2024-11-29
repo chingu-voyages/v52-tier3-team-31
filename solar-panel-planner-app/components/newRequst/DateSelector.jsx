@@ -56,7 +56,7 @@ const DateSelector = ({ onDateSlotConfirm }) => {
                   color: "white",
                   border: "none",
                   cursor: "pointer",
-                  width: "175px",
+                  width: "170px",
                 }}
               >
                 {slot.label}
