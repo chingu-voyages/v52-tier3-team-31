@@ -5,7 +5,7 @@ import PlanningCards from "@/components/planning/PlanningCards";
 import React, { useEffect, useState } from "react";
 import PlanningHeader from "@/components/planning/PlanningHeader";
 import Dropdown from "@/components/planning/Dropdown";
-import { getAllPlanVisitRequests, updateRequestTimeSlot } from "@/app/actions/requestActions";
+import { getAllPlanVisitRequests, updateRequestStatus, updateRequestTimeSlot } from "@/app/actions/requestActions";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 
 const Planning = () => {
@@ -35,7 +35,7 @@ const Planning = () => {
   };
   const [dates] = useState(generateDates());
 
-  const getRescheduleSelectedTimeSlot = async (time, id) => {
+  const rescheduleSelectedTimeSlot = async (time, id) => {
     const response = await updateRequestTimeSlot(id, time);
 
     if (response?.request) {
@@ -54,6 +54,28 @@ const Planning = () => {
       console.error("Failed to update request:", response.error);
     }
   };
+
+  const confirmRequestsFn = async () =>{
+    try{
+      const updatedRequests = await Promise.all(
+        allPlannedRequests.map((request) =>
+          updateRequestStatus(request._id, "scheduled")
+        )
+      );
+      const successfulUpdates = updatedRequests.filter(
+        (res) => !res.error
+      );
+      setAllPlannedRequest((prevRequests) =>
+        prevRequests.map((req) =>
+          successfulUpdates.find((updated) => updated.data._id === req._id)
+            ? { ...req, status: "scheduled" }
+            : req
+        )
+      );
+    }catch (error) {
+      console.error("Error confirming requests:", error);
+    }
+  }
 
   return (
     <div className="max-w-[1000px] mx-auto">
@@ -78,11 +100,11 @@ const Planning = () => {
           <PlanningHeader selectedDate={selectedDate} />
           <PlanningCards
             allPlannedRequests={allPlannedRequests}
-            getRescheduleSelectedTimeSlot={getRescheduleSelectedTimeSlot}
+            rescheduleSelectedTimeSlot={rescheduleSelectedTimeSlot}
           />
           {allPlannedRequests.length > 0 && (
             <div className="text-center mt-10">
-              <PrimaryBtn text={"Confirm Request"} />
+              <PrimaryBtn text={"Confirm Request"} onClickFn={confirmRequestsFn}/>
             </div>
           )}
         </div>

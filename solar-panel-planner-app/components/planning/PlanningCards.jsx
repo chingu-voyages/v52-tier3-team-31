@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { timeSlots } from "@/utils/timesSlots";
 import Dropdown from "./Dropdown";
 
-const PlanningCards = ({ allPlannedRequests, getRescheduleSelectedTimeSlot }) => {
+const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
   const [isHovered, setIsHovered] = useState(null);
 
   const requestedTimeSlots = allPlannedRequests.map((request) => {
@@ -27,7 +27,7 @@ const PlanningCards = ({ allPlannedRequests, getRescheduleSelectedTimeSlot }) =>
               {isHovered === idx ? (
                 <Dropdown
                   values={availableTimeSlots}
-                  setSelectedValue={(time)=> getRescheduleSelectedTimeSlot(time, request._id)}
+                  setSelectedValue={(time)=> rescheduleSelectedTimeSlot(time, request._id)}
                 />
               ) : (
                 <p className="whitespace-nowrap">
