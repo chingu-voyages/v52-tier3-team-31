@@ -1,5 +1,5 @@
 "use server";
-
+import dayjs from "dayjs";
 import connectToDatabase from "@/app/lib/db";
 import Request from "@/app/models/Request";
 
@@ -19,7 +19,7 @@ const sampleRequest = new Request({
 // Create a new request using the form data
 export async function createRequest(formData) {
   try {
-    const {name, phone, email, address, location, requestedDate} = formData
+    const { name, phone, email, address, location, requestedDate } = formData;
     const scheduledDate = requestedDate;
 
     const request = new Request({
@@ -88,13 +88,32 @@ export async function updateRequestStatus(requestId, status) {
   }
 }
 
+export async function updateRequestTimeSlot(requestId, slot) {
+  try {
+    let request = await Request.findById(requestId);
+    if (request) {
+      const updatedRequestedDate = dayjs(request.requestedDate)
+        .hour(parseInt(slot.split(":")[0]))
+        .minute(parseInt(slot.split(":")[1]));
+
+      request.requestedDate = updatedRequestedDate.toISOString();
+      request.scheduledDate = updatedRequestedDate.toISOString();
+      await request.save();
+      return { request };
+    } else {
+      return { error: "No Request found for this ID" };
+    }
+  } catch (error) {
+    return { error: error.message };
+  }
+}
 
 export async function getAllPlanVisitRequests() {
   try {
     let requests = await Request.find();
-    requests = requests.filter((request)=>{
-      return request.status === 'new' || request.status === 'scheduled'
-    })
+    requests = requests.filter((request) => {
+      return request.status === "new" || request.status === "scheduled";
+    });
     if (requests.length > 0) {
       return { data: requests };
     } else {
@@ -105,7 +124,6 @@ export async function getAllPlanVisitRequests() {
     return { error: error.message };
   }
 }
-
 
 export async function fetchFilteredRequests(searchTerm, currentPage, perPage) {
   const offset = (currentPage - 1) * perPage;

@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import { timeSlots } from "@/utils/timesSlots";
 import Dropdown from "./Dropdown";
 
-const PlanningCards = ({ allPlannedRequests }) => {
+const PlanningCards = ({ allPlannedRequests, getRescheduleSelectedTimeSlot }) => {
   const [isHovered, setIsHovered] = useState(null);
 
   const requestedTimeSlots = allPlannedRequests.map((request) => {
@@ -13,10 +13,6 @@ const PlanningCards = ({ allPlannedRequests }) => {
   const availableTimeSlots = timeSlots
     .filter((slot) => !requestedTimeSlots.includes(slot.start))
     .map((slot) => slot.start);
-
-  const getRescheduleSelectedTimeSlot = (time, id) => {
-    console.log(time, id);
-  };
 
   return (
     <div className="flex flex-col gap-5">
