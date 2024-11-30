@@ -1,15 +1,19 @@
 import React from "react";
 
-const Dropdown = ({dates, selectedDate, setSelectedDate }) => {
+const Dropdown = ({values, setSelectedValue }) => {
+
+  const handleChange = (e) => {
+    setSelectedValue(e.target.value); 
+  };
   return (
     <select
-      className="w-full p-2 border border-gray-300 rounded-md"
-      onChange={(e) => setSelectedDate(e.target.value)}
-      value={selectedDate}
+      className="w-full p-2 border border-gray-300 rounded-md min-w-[80px]"
+      onChange={handleChange}
+      defaultValue={values[0] || ""}
     >
-      {dates.map((date, idx) => (
-        <option key={idx} value={date.format("MM/DD/YYYY")}>
-          {date.format("MM/DD/YYYY")}
+      {values.map((date, idx) => (
+        <option key={idx} value={date} >
+          {date} 
         </option>
       ))}
     </select>

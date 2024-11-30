@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import PlanningHeader from "@/components/planning/PlanningHeader";
 import Dropdown from "@/components/planning/Dropdown";
 import { getAllPlanVisitRequests } from "@/app/actions/requestActions";
+import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 
 const Planning = () => {
   const [selectedDate, setSelectedDate] = useState(
@@ -40,19 +41,27 @@ const Planning = () => {
         <h1 className="section-heading mt-5">Planning View</h1>
         <div className="block sm:hidden">
           <Dropdown
-            dates={dates}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
+            values={dates.map(date => date.format("MM/DD/YYYY"))}
+            setSelectedValue={setSelectedDate}
           />
         </div>
       </div>
       <div className="flex gap-20">
         <div className="hidden sm:block sm:w-[20%]">
-          <DateView selectedDate={selectedDate} setSelectedDate={setSelectedDate} dates={dates} />
+          <DateView
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            dates={dates}
+          />
         </div>
         <div className="bg-slate-500 w-[100%] sm:w-[calc(100%-20%)]">
           <PlanningHeader selectedDate={selectedDate} />
           <PlanningCards allPlannedRequests={allPlannedRequests} />
+          {allPlannedRequests.length > 0 && (
+            <div className="text-center mt-10">
+              <PrimaryBtn text={"Confirm Request"} />
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { createRequest } from "@/app/actions/requestActions";
 import DateSelector from "@/components/newRequst/DateSelector";
 import React, { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const initialFormData = {
   name: "",
@@ -18,6 +19,7 @@ const Request = () => {
   const [selectedDateSlot, setSelectedDateSlot] = useState(null);
   const [errors, setErrors] = useState({});
   const [suggestions, setSuggestions] = useState([]);
+  const route = useRouter();
 
   const handleReset = () => {
     setFormData(initialFormData);
@@ -106,14 +108,14 @@ const Request = () => {
 
     if (isValid) {
       try {
-        console.log(updatedFormData);
-        const response = await createRequest(updatedFormData);
-        console.log(response);
+        await createRequest(updatedFormData);
         handleReset();
+        route.push('/')
       } catch (error) {
         console.log("Failed to create request", error.message);
       }
     }
+
   };
 
   const handleSuggestionClick = (suggestion) => {
