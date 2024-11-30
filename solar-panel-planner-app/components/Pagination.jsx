@@ -17,7 +17,6 @@ const Pagination = ({ totalPages }) => {
   const [nextDisabled, setNextDisabled] = useState(false);
 
   const changePageTo = (page) => {
-    console.log(`Setting active page to ${page}`);
     setActivePage(page);
     const params = new URLSearchParams(searchParams);
     params.set("page", page);
@@ -37,7 +36,6 @@ const Pagination = ({ totalPages }) => {
   };
 
   const handlePageChangeButton = (e) => {
-    console.log(`Should go to page ${e}`);
     if (e === "next") {
       setActivePage(activePage + 1);
     } else {
@@ -53,22 +51,14 @@ const Pagination = ({ totalPages }) => {
 
   // disable next and previous buttons based on page change
   useEffect(() => {
-    console.log(
-      `Active Page ${activePage} / First : ${pages.at(0)} Last : ${pages.at(
-        -1
-      )}`
-    );
     if (pages.length > 0) {
-      console.log(`Last page : ${pages.at(-1)} First Page : ${pages.at(0)}`);
       if (activePage == pages.at(-1)) {
-        console.log(`disable next`);
         setNextDisabled(true);
       } else {
         setNextDisabled(false);
       }
 
       if (activePage == pages.at(0)) {
-        console.log(`disable previous`);
         setPrevDisabled(true);
       } else {
         setPrevDisabled(false);
