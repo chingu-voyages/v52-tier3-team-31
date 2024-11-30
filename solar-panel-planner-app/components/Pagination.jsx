@@ -16,28 +16,13 @@ const Pagination = ({ totalPages }) => {
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
 
-  useEffect(() => {
-    setPages(Array.from({ length: totalPages }, (_, i) => i + 1));
-    setActivePage(searchParams.get("page"));
-  }, [totalPages]);
-
-  useEffect(() => {
-    console.log(`Last page : ${pages.at(-1)} First Page : ${pages.at(0)}`);
-    if (activePage === pages.at(-1)) {
-      console.log(`disable next`);
-      setNextDisabled(true);
-    } else {
-      setNextDisabled(false);
-    }
-
-    if (activePage === pages.at(0)) {
-      console.log(`disable previous`);
-
-      setPrevDisabled(true);
-    } else {
-      setPrevDisabled(false);
-    }
-  }, [activePage, pages]);
+  const changePageTo = (page) => {
+    console.log(`Setting active page to ${page}`);
+    setActivePage(page);
+    const params = new URLSearchParams(searchParams);
+    params.set("page", page);
+    replace(`${pathName}?${params.toString()}`);
+  };
 
   const handlePerPageChange = (e) => {
     setPerPage(e.target.value);
@@ -48,15 +33,49 @@ const Pagination = ({ totalPages }) => {
   };
 
   const handleActivePageChange = (e) => {
-    setActivePage(e.target.value);
-    const params = new URLSearchParams(searchParams);
-    params.set("page", e.target.value);
-    replace(`${pathName}?${params.toString()}`);
+    changePageTo(e.target.value);
   };
 
   const handlePageChangeButton = (e) => {
     console.log(`Should go to page ${e}`);
+    if (e === "next") {
+      setActivePage(activePage + 1);
+    } else {
+      setActivePage(activePage - 1);
+    }
   };
+
+  // generate list of pages
+  useEffect(() => {
+    setPages(Array.from({ length: totalPages }, (_, i) => i + 1));
+    setActivePage(Number(searchParams.get("page")) || 1);
+  }, [totalPages]);
+
+  // disable next and previous buttons based on page change
+  useEffect(() => {
+    console.log(
+      `Active Page ${activePage} / First : ${pages.at(0)} Last : ${pages.at(
+        -1
+      )}`
+    );
+    if (pages.length > 0) {
+      console.log(`Last page : ${pages.at(-1)} First Page : ${pages.at(0)}`);
+      if (activePage == pages.at(-1)) {
+        console.log(`disable next`);
+        setNextDisabled(true);
+      } else {
+        setNextDisabled(false);
+      }
+
+      if (activePage == pages.at(0)) {
+        console.log(`disable previous`);
+        setPrevDisabled(true);
+      } else {
+        setPrevDisabled(false);
+      }
+    }
+    changePageTo(activePage);
+  }, [activePage, pages]);
 
   return (
     <div className="flex gap-2 mb-4 mx-auto justify-center">
@@ -64,8 +83,9 @@ const Pagination = ({ totalPages }) => {
         <button
           disabled={prevDisabled}
           className="my-auto border border-gray-200 h-full size-10 px-2 rounded-md"
+          onClick={() => handlePageChangeButton("prev")}
         >
-          <FaChevronLeft />
+          <FaChevronLeft color={prevDisabled ? "gray" : "black"} />
         </button>
         <select
           className="block w-full rounded-md border border-gray-200 py-[9px] pl-2 text-sm outline-2 placeholder:text-gray-500"
@@ -81,11 +101,9 @@ const Pagination = ({ totalPages }) => {
         <button
           disabled={nextDisabled}
           className="my-auto border border-gray-200 h-full size-10 px-2 rounded-md"
-          onClick={() => {
-            handlePageChangeButton;
-          }}
+          onClick={() => handlePageChangeButton("next")}
         >
-          <FaChevronRight />
+          <FaChevronRight color={nextDisabled ? "gray" : "black"} />
         </button>
       </div>
       <div className="flex px-2">
