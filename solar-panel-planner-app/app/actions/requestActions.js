@@ -2,7 +2,10 @@
 
 import connectToDatabase from "@/app/lib/db";
 import Request from "@/app/models/Request";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
+dayjs.extend(utc);
 await connectToDatabase();
 
 const sampleRequest = new Request({
@@ -91,13 +94,12 @@ export async function updateRequestStatus(requestId, status) {
   }
 }
 
-
 export async function getAllPlanVisitRequests() {
   try {
     let requests = await Request.find();
-    requests = requests.filter((request)=>{
-      return request.status === 'new' || request.status === 'scheduled'
-    })
+    requests = requests.filter((request) => {
+      return request.status === "new" || request.status === "scheduled";
+    });
     if (requests.length > 0) {
       return { data: requests };
     } else {
@@ -109,6 +111,31 @@ export async function getAllPlanVisitRequests() {
   }
 }
 
+// TODO: THE RESULT IS NOT CORRECT! NOT ALL REQUESTS ARE BEING RETURNED.
+export async function getScheduledRequestsForDate(date) {
+  const start = dayjs(date, "MM/DD/YYYY").utc(true);
+  const end = start.add(1, "day");
+  console.log("Searching between ", start.format(), " and ", end.format());
+
+  try {
+    let requests = await Request.find({
+      scheduledDate: {
+        $gte: start.toDate(),
+        $lte: end.toDate(),
+      },
+      // status: "scheduled",
+    });
+    console.log(`Requests Found : ${requests.length}`);
+    if (requests.length > 0) {
+      return { data: requests };
+    } else {
+      return { data: [], error: "No requests found for this date." };
+    }
+  } catch (error) {
+    console.log(error);
+    return { error: error.message };
+  }
+}
 
 export async function fetchFilteredRequests(searchTerm, currentPage, perPage) {
   const offset = (currentPage - 1) * perPage;
