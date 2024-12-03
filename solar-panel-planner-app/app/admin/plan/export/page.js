@@ -1,5 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import dayjs from "dayjs";
 import { getScheduledRequestsForDate } from "@/app/actions/requestActions";
 
 const PDFListView = dynamic(
@@ -10,14 +11,17 @@ const PDFListView = dynamic(
   }
 );
 
-const page = async () => {
-  let requests = await getScheduledRequestsForDate("12/01/2024");
+const page = async ({ searchParams }) => {
+  let today = dayjs().format("MM-DD-YYYY");
+  const date = searchParams?.date || today;
+  let requests = await getScheduledRequestsForDate(date);
+
   console.log(`Fetched requests : ${requests.data.length}`);
   return (
     <div>
       {requests && (
         <PDFListView
-          date="12/01/2024"
+          date={date}
           requests={JSON.parse(JSON.stringify(requests.data))}
         />
       )}
