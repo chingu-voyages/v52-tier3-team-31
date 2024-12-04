@@ -1,6 +1,7 @@
 "use client";
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, RenderingType } from "@vis.gl/react-google-maps";
 import { MarkerWithInfowindow } from "./MarkerWithInfoWindow";
+import PDFMapExport from "./planning/export-to-pdf/PDFMapExport";
 const AdminGoogleMap = ({ requests }) => {
   return (
     <APIProvider
@@ -14,6 +15,8 @@ const AdminGoogleMap = ({ requests }) => {
         defaultZoom={11}
         gestureHandling={"greedy"}
         disableDefaultUI={true}
+        reuseMaps={true}
+        renderingType={RenderingType.RASTER}
       >
         {requests &&
           requests.map((request, index) => (
@@ -24,6 +27,7 @@ const AdminGoogleMap = ({ requests }) => {
             />
           ))}
       </Map>
+      <PDFMapExport />
     </APIProvider>
   );
 };
