@@ -1,50 +1,48 @@
+"use client";
 import { useEffect, useState } from "react";
 import { useMap } from "@vis.gl/react-google-maps";
 import html2canvas from "html2canvas";
-const PDFMapExport = () => {
+
+const PDFMapExport = ({ date }) => {
   const mapElement = useMap();
   const [mapDiv, setMapDiv] = useState(null);
 
-  const downloadScreenshot = async () => {
-    let canvas = await html2canvas(mapDiv, {
-      allowTaint: true,
-      useCORS: true,
-      logging: true,
+  const saveMapImageData = async () => {
+    html2canvas(mapDiv, { allowTaint: false, useCORS: true }).then((canvas) => {
+      let imageData = canvas.toDataURL({
+        type: "image/jpeg",
+        quality: 1.0,
+      });
+      sessionStorage.setItem("map-image", imageData);
+      console.log(`Canvas saved in sessionStorage`);
     });
-
-    let image = canvas.toDataURL({
-      type: "image/jpeg",
-      quality: 1.0,
-    });
-
-    const a = document.createElement("a");
-    a.href = image;
-    a.download = "map.jpg";
-    a.click();
   };
 
+  // if mapElement is loaded, then get the div of the map
   useEffect(() => {
-    if (!mapElement) return;
+    if (!mapElement) {
+      return;
+    }
     setMapDiv(mapElement.getDiv());
   }, [mapElement]);
 
+  // if mapDiv is loaded, then save the image
   useEffect(() => {
     if (mapDiv) {
-      console.log(`Ready to download map as image`);
+      setTimeout(() => {
+        saveMapImageData();
+      }, 1000);
     }
   }, [mapDiv]);
 
-  return (
-    <div>
-      <button
-        type="button"
-        className="btn border-1 border-gray-700"
-        onClick={downloadScreenshot}
-      >
-        Download screenshot
-      </button>
-    </div>
-  );
+  useEffect(() => {
+    console.log("Date changed. Export for new date!");
+    setTimeout(() => {
+      saveMapImageData();
+    }, 1000);
+  }, [date]);
+
+  return <></>;
 };
 
 export default PDFMapExport;
