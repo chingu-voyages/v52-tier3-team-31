@@ -15,11 +15,14 @@ const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
     .map((slot) => slot.start);
 
   return (
-    <div className="flex flex-col gap-4 p-8">
+    <div className="flex flex-col gap-2">
       {allPlannedRequests.length === 0 && <h1>No Request!</h1>}
       {allPlannedRequests.map((request, idx) => {
         return (
-          <div key={idx} className="flex items-center gap-10">
+          <div
+            key={idx}
+            className="flex  items-center justify-between gap-10 bg-gray-50 p-4 "
+          >
             <div
               onMouseEnter={() => setIsHovered(idx)}
               onMouseLeave={() => setIsHovered(null)}
@@ -32,7 +35,7 @@ const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
                   }
                 />
               ) : (
-                <p className="whitespace-nowrap">
+                <p className="whitespace-nowrap  text-xl font-semibold">
                   {dayjs(request.scheduledDate).format("h.mm A")}
                 </p>
               )}
