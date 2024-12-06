@@ -14,6 +14,11 @@ const Planning = () => {
   const [allPlannedRequests, setAllPlannedRequest] = useState([]);
 
   useEffect(() => {
+    let imageData = sessionStorage.getItem("map-image");
+    if (imageData) {
+      sessionStorage.removeItem("map-image");
+    }
+
     const getAllRequestsData = async () => {
       const allRequest = await getAllPlanVisitRequests();
       const filtered = allRequest.data.filter((request) => {
@@ -48,7 +53,11 @@ const Planning = () => {
       </div>
       <div className="flex gap-20">
         <div className="hidden sm:block sm:w-[20%]">
-          <DateView selectedDate={selectedDate} setSelectedDate={setSelectedDate} dates={dates} />
+          <DateView
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            dates={dates}
+          />
         </div>
         <div className="bg-slate-500 w-[100%] sm:w-[calc(100%-20%)]">
           <PlanningHeader selectedDate={selectedDate} />
