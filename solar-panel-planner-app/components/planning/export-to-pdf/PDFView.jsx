@@ -170,12 +170,6 @@ const PDFView = ({ date, requests, map }) => {
 
   return (
     <div>
-      <button
-        className="btn border-2 bg-yellow-400"
-        onClick={downloadImageFromSessionStorage}
-      >
-        Download Image
-      </button>
       {loaded && (
         <PDFViewer className="w-screen h-screen">
           <Document>

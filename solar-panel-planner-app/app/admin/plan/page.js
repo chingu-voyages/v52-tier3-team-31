@@ -14,8 +14,11 @@ import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import { toast } from "react-toastify";
 import { showConfirmationBtn } from "./rules";
 import PlanningMapView from "@/components/planning/PlanningMapView";
+import { useRouter } from "next/navigation";
 
 const Planning = () => {
+  const router = useRouter();
+
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format("MM/DD/YYYY")
   );
@@ -150,6 +153,10 @@ const Planning = () => {
     setShowMap(showMap);
   };
 
+  const handleExportToPDF = () => {
+    router.push(`/admin/plan/export?date=${selectedDate}&map=${showMap}`);
+  };
+
   return (
     <div className="mx-auto ">
       <div className="flex justify-between items-center sm:justify-center">
@@ -174,6 +181,7 @@ const Planning = () => {
             <PlanningHeader
               selectedDate={selectedDate}
               toggleView={handleViewSwitch}
+              exportToPDF={handleExportToPDF}
             />
             {showMap ? (
               <PlanningMapView requests={allPlannedRequests} />

@@ -20,7 +20,7 @@ const ViewToggleSwitch = ({ handleViewSwitch }) => {
           onChange={handleCheckboxChange}
         />
         <span
-          className={`flex items-center  rounded py-2 px-[18px] text-sm font-medium ${
+          className={`flex items-center  rounded py-2 px-[18px] text-sm font-medium hover:bg-gray-50 ${
             !showMap ? "text-white bg-primary-dark" : "text-primary-dark"
           }`}
         >
@@ -28,7 +28,7 @@ const ViewToggleSwitch = ({ handleViewSwitch }) => {
           List
         </span>
         <span
-          className={`flex items-center space-x-[6px] rounded py-2 px-[18px] text-sm font-medium ${
+          className={`flex items-center space-x-[6px] rounded py-2 px-[18px] text-sm font-medium hover:bg-gray-50  ${
             showMap ? "text-white bg-primary-dark" : "text-primary-dark"
           }`}
         >

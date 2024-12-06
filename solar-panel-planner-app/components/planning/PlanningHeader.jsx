@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import ViewToggleSwitch from "./ViewToggleSwitch";
-
-const PlanningHeader = ({ selectedDate, toggleView }) => {
+import { FaFilePdf } from "react-icons/fa";
+const PlanningHeader = ({ selectedDate, toggleView, exportToPDF }) => {
   const handleViewSwitch = (showMap) => {
     toggleView(showMap);
   };
@@ -19,7 +19,13 @@ const PlanningHeader = ({ selectedDate, toggleView }) => {
       <div>
         <div className="flex gap-2 items-center">
           <ViewToggleSwitch handleViewSwitch={handleViewSwitch} />
-          <button className=""> Export to PDF</button>
+          <button
+            className="rounded-md border p-2 text-sm inline-flex items-center gap-2 hover:bg-gray-100"
+            onClick={exportToPDF}
+          >
+            <FaFilePdf />
+            Export to PDF
+          </button>
         </div>
       </div>
     </div>
