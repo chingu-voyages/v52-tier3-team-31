@@ -11,13 +11,14 @@ import {
   updateRequestTimeSlot,
 } from "@/app/actions/requestActions";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
-import { request } from "axios";
+import { toast } from "react-toastify";
 
 const Planning = () => {
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format("MM/DD/YYYY")
   );
   const [allPlannedRequests, setAllPlannedRequest] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     let imageData = sessionStorage.getItem("map-image");
@@ -113,6 +114,8 @@ const Planning = () => {
   };
 
   const confirmRequestsFn = async () => {
+    if(isLoading) return false;
+    setIsLoading(true);
     try {
       const updatedRequests = await Promise.all(
         allPlannedRequests.map((request) =>
@@ -123,6 +126,7 @@ const Planning = () => {
 
       if (successfulUpdates.length > 0) {
         await sendConfirmationEmail(successfulUpdates);
+        toast('Confirmation emails have been successfully sent!');
       }
 
       setAllPlannedRequest((prevRequests) =>
@@ -134,6 +138,8 @@ const Planning = () => {
       );
     } catch (error) {
       console.error("Error confirming requests:", error);
+    } finally{
+      setIsLoading(false);
     }
   };
 
@@ -167,6 +173,7 @@ const Planning = () => {
               <PrimaryBtn
                 text={"Confirm Request"}
                 onClickFn={confirmRequestsFn}
+                isDisabled={isLoading}
               />
             </div>
           )}
