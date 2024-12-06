@@ -123,7 +123,7 @@ const Planning = () => {
       setAllPlannedRequest((prevRequests) =>
         prevRequests.map((req) =>
           successfulUpdates.find((updated) => updated.data._id === req._id)
-            ? { ...req, status: "scheduled" }
+            ? { ...req, status: "scheduled", confirmationEmailSend: true }
             : req
         )
       );
