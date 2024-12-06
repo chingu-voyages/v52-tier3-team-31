@@ -18,13 +18,13 @@ const RequestSchema = new Schema(
         required: true,
       },
     },
-    requestedDate: { type: Date, required: true },
+    requestedDate: { type: Date, required: true, unique: true },
     status: {
       type: String,
       enum: ["new", "scheduled", "cancelled", "visited"],
       default: "new",
     },
-    scheduledDate: { type: Date, required: true },
+    scheduledDate: { type: Date, required: true, unique: true },
     confirmationEmailSent: { type: Boolean, default: false },
   },
   { timestamps: true }

@@ -1,7 +1,19 @@
 "use client";
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, RenderingType } from "@vis.gl/react-google-maps";
 import { MarkerWithInfowindow } from "./MarkerWithInfoWindow";
+import PDFMapExport from "./planning/export-to-pdf/PDFMapExport";
+import { useEffect, useState } from "react";
+
 const AdminGoogleMap = ({ requests }) => {
+  const [date, setDate] = useState("");
+
+  useEffect(() => {
+    console.log("AdminGoogleMap re-rendered");
+    if (requests.length > 0) {
+      setDate(requests[0].scheduledDate);
+    }
+  }, [requests]);
+
   return (
     <APIProvider
       apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
@@ -14,6 +26,8 @@ const AdminGoogleMap = ({ requests }) => {
         defaultZoom={11}
         gestureHandling={"greedy"}
         disableDefaultUI={true}
+        reuseMaps={true}
+        renderingType={RenderingType.RASTER}
       >
         {requests &&
           requests.map((request, index) => (
@@ -24,6 +38,7 @@ const AdminGoogleMap = ({ requests }) => {
             />
           ))}
       </Map>
+      <PDFMapExport date={date} />
     </APIProvider>
   );
 };
