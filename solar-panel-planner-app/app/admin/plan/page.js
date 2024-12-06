@@ -13,6 +13,7 @@ import {
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import { toast } from "react-toastify";
 import { showConfirmationBtn } from "./rules";
+import PlanningMapView from "@/components/planning/PlanningMapView";
 
 const Planning = () => {
   const [selectedDate, setSelectedDate] = useState(
@@ -20,7 +21,7 @@ const Planning = () => {
   );
   const [allPlannedRequests, setAllPlannedRequest] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [showMap, setShowMap] = useState(false);
   useEffect(() => {
     let imageData = sessionStorage.getItem("map-image");
     if (imageData) {
@@ -116,7 +117,7 @@ const Planning = () => {
   };
 
   const confirmRequestsFn = async () => {
-    if(isLoading) return false;
+    if (isLoading) return false;
     setIsLoading(true);
     try {
       const updatedRequests = await Promise.all(
@@ -128,7 +129,7 @@ const Planning = () => {
 
       if (successfulUpdates.length > 0) {
         await sendConfirmationEmail(successfulUpdates);
-        toast('Confirmation emails have been successfully sent!');
+        toast("Confirmation emails have been successfully sent!");
       }
 
       setAllPlannedRequest((prevRequests) =>
@@ -140,15 +141,19 @@ const Planning = () => {
       );
     } catch (error) {
       console.error("Error confirming requests:", error);
-    } finally{
+    } finally {
       setIsLoading(false);
     }
   };
 
+  const handleViewSwitch = (showMap) => {
+    setShowMap(showMap);
+  };
+
   return (
-    <div className="max-w-[1000px] mx-auto">
+    <div className="mx-auto ">
       <div className="flex justify-between items-center sm:justify-center">
-        <h1 className="section-heading mt-5">Planning View</h1>
+        <h1 className="page-heading mt-5">Plan Visits</h1>
         <div className="block sm:hidden">
           <Dropdown
             values={dates.map((date) => date.format("MM/DD/YYYY"))}
@@ -156,29 +161,42 @@ const Planning = () => {
           />
         </div>
       </div>
-      <div className="flex gap-20">
-        <div className="hidden sm:block sm:w-[20%]">
-          <DateView
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            dates={dates}
-          />
-        </div>
-        <div className="bg-slate-500 w-[100%] sm:w-[calc(100%-20%)]">
-          <PlanningHeader selectedDate={selectedDate} />
-          <PlanningCards
-            allPlannedRequests={allPlannedRequests}
-            rescheduleSelectedTimeSlot={rescheduleSelectedTimeSlot}
-          />
-          {showConfirmationBtn(allPlannedRequests)&& (
-            <div className="text-center mt-10">
-              <PrimaryBtn
-                text={"Confirm Request"}
-                onClickFn={confirmRequestsFn}
-                isDisabled={isLoading}
-              />
-            </div>
-          )}
+      <div className="p-4 rounded-sm ">
+        <div className="lg:mx-40 flex gap-4 ">
+          <div className="hidden sm:block sm:w-[20%] ">
+            <DateView
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              dates={dates}
+            />
+          </div>
+          <div className="w-[100%] sm:w-[calc(100%-20%)] rounded-lg bg-white border">
+            <PlanningHeader
+              selectedDate={selectedDate}
+              toggleView={handleViewSwitch}
+            />
+            {showMap ? (
+              <PlanningMapView requests={allPlannedRequests} />
+            ) : (
+              <>
+                <PlanningCards
+                  allPlannedRequests={JSON.parse(
+                    JSON.stringify(allPlannedRequests)
+                  )}
+                  rescheduleSelectedTimeSlot={rescheduleSelectedTimeSlot}
+                />
+                {showConfirmationBtn(allPlannedRequests) && (
+                  <div className="text-center mt-10">
+                    <PrimaryBtn
+                      text={"Confirm Request"}
+                      onClickFn={confirmRequestsFn}
+                      isDisabled={isLoading}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
     .map((slot) => slot.start);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4 p-8">
       {allPlannedRequests.length === 0 && <h1>No Request!</h1>}
       {allPlannedRequests.map((request, idx) => {
         return (
@@ -27,7 +27,9 @@ const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
               {isHovered === idx && request.status !== "scheduled" ? (
                 <Dropdown
                   values={availableTimeSlots}
-                  setSelectedValue={(time)=> rescheduleSelectedTimeSlot(time, request._id)}
+                  setSelectedValue={(time) =>
+                    rescheduleSelectedTimeSlot(time, request._id)
+                  }
                 />
               ) : (
                 <p className="whitespace-nowrap">
