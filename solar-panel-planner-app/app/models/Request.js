@@ -7,13 +7,24 @@ const RequestSchema = new Schema(
     phone: { type: String, required: true },
     email: { type: String, required: true },
     address: { type: String, required: true },
-    requestedDate: { type: Date, required: true },
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: true,
+      },
+      coordinates: {
+        type: [Number], // [longitude, latitude]
+        required: true,
+      },
+    },
+    requestedDate: { type: Date, required: true, unique: true },
     status: {
       type: String,
       enum: ["new", "scheduled", "cancelled", "visited"],
       default: "new",
     },
-    scheduledDate: { type: Date, required: true },
+    scheduledDate: { type: Date, required: true, unique: true },
     confirmationEmailSent: { type: Boolean, default: false },
   },
   { timestamps: true }
