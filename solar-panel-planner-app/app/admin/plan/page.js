@@ -11,14 +11,14 @@ import {
   updateRequestTimeSlot,
 } from "@/app/actions/requestActions";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
-import { request } from "axios";
+import PlanningMapView from "@/components/planning/PlanningMapView";
 
 const Planning = () => {
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format("MM/DD/YYYY")
   );
   const [allPlannedRequests, setAllPlannedRequest] = useState([]);
-
+  const [showMap, setShowMap] = useState(false);
   useEffect(() => {
     let imageData = sessionStorage.getItem("map-image");
     if (imageData) {
@@ -35,7 +35,7 @@ const Planning = () => {
     };
     getAllRequestsData();
   }, [selectedDate]);
-  console.log('all appointment', allPlannedRequests)
+  console.log("all appointment", allPlannedRequests);
 
   const generateDates = () => {
     const dates = [];
@@ -137,10 +137,14 @@ const Planning = () => {
     }
   };
 
+  const handleViewSwitch = (showMap) => {
+    setShowMap(showMap);
+  };
+
   return (
-    <div className="max-w-[1000px] mx-auto">
+    <div className="mx-auto ">
       <div className="flex justify-between items-center sm:justify-center">
-        <h1 className="section-heading mt-5">Planning View</h1>
+        <h1 className="page-heading mt-5">Plan Visits</h1>
         <div className="block sm:hidden">
           <Dropdown
             values={dates.map((date) => date.format("MM/DD/YYYY"))}
@@ -148,28 +152,41 @@ const Planning = () => {
           />
         </div>
       </div>
-      <div className="flex gap-20">
-        <div className="hidden sm:block sm:w-[20%]">
-          <DateView
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            dates={dates}
-          />
-        </div>
-        <div className="bg-slate-500 w-[100%] sm:w-[calc(100%-20%)]">
-          <PlanningHeader selectedDate={selectedDate} />
-          <PlanningCards
-            allPlannedRequests={allPlannedRequests}
-            rescheduleSelectedTimeSlot={rescheduleSelectedTimeSlot}
-          />
-          {allPlannedRequests.length > 0 && (
-            <div className="text-center mt-10">
-              <PrimaryBtn
-                text={"Confirm Request"}
-                onClickFn={confirmRequestsFn}
-              />
-            </div>
-          )}
+      <div className="p-4 rounded-sm ">
+        <div className="lg:mx-40 flex gap-4 ">
+          <div className="hidden sm:block sm:w-[20%] ">
+            <DateView
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              dates={dates}
+            />
+          </div>
+          <div className="w-[100%] sm:w-[calc(100%-20%)] rounded-lg bg-white border">
+            <PlanningHeader
+              selectedDate={selectedDate}
+              toggleView={handleViewSwitch}
+            />
+            {showMap ? (
+              <PlanningMapView requests={allPlannedRequests} />
+            ) : (
+              <>
+                <PlanningCards
+                  allPlannedRequests={JSON.parse(
+                    JSON.stringify(allPlannedRequests)
+                  )}
+                  rescheduleSelectedTimeSlot={rescheduleSelectedTimeSlot}
+                />
+                {allPlannedRequests.length > 0 && (
+                  <div className="text-center mt-10">
+                    <PrimaryBtn
+                      text={"Confirm Request"}
+                      onClickFn={confirmRequestsFn}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

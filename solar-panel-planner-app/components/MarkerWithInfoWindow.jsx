@@ -21,8 +21,8 @@ export const MarkerWithInfowindow = ({ order, request }) => {
         ref={markerRef}
         onClick={() => setInfowindowOpen(true)}
         position={{
-          lat: location.coordinates[1],
-          lng: location.coordinates[0],
+          lat: location.coordinates[0],
+          lng: location.coordinates[1],
         }}
         title={"AdvancedMarker that opens an Infowindow when clicked."}
       >
