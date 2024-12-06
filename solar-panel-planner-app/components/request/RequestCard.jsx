@@ -14,7 +14,7 @@ const RequestCard = ({ request }) => {
   return (
     <Link
       href={`/request/${request._id}`}
-      className={`overflow-hidden rounded-lg bg-white shadow-sm border-2 ${borderStatusColors[status]} transition-transform hover:scale-105`}
+      className={`overflow-hidden rounded-lg bg-white shadow-md border-l-8  ${borderStatusColors[status]} transition-transform hover:scale-105`}
     >
       <div className="px-5 py-4 border-b bg-gray-50 flex justify-between items-center">
         <div className="flex items-center gap-2 text-lg font-semibold">
