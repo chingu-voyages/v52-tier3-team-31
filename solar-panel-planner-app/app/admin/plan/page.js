@@ -30,6 +30,7 @@ const Planning = () => {
     };
     getAllRequestsData();
   }, [selectedDate]);
+  console.log('all appointment', allPlannedRequests)
 
   const generateDates = () => {
     const dates = [];
