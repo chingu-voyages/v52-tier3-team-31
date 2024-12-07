@@ -12,6 +12,7 @@ import {
 } from "@/app/actions/requestActions";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import { toast } from "react-toastify";
+import { showConfirmationBtn } from "./rules";
 
 const Planning = () => {
   const [selectedDate, setSelectedDate] = useState(
@@ -36,7 +37,7 @@ const Planning = () => {
     };
     getAllRequestsData();
   }, [selectedDate]);
-  console.log('all appointment', allPlannedRequests)
+  console.log("all appointment", allPlannedRequests);
 
   const generateDates = () => {
     const dates = [];
@@ -70,6 +71,11 @@ const Planning = () => {
   const sendConfirmationEmail = async (requests) => {
     try {
       const emailPromises = requests.map(async (request) => {
+        const scheduledDate = request.data?.scheduledDate;
+        const formattedDate = dayjs(scheduledDate).isValid()
+          ? dayjs(scheduledDate).format("MM/DD/YYYY hh:mm A")
+          : "an unknown date";
+
         const response = await fetch("/api/send-email", {
           method: "POST",
           headers: {
@@ -81,11 +87,7 @@ const Planning = () => {
               { name: request.data?.name, address: request.data?.email },
             ],
             subject: "Your Request is Confirmed",
-            message: `Hello ${request.data?.name}, your request at ${
-              dayjs(request.data?.scheduledDate).isValid()
-                ? dayjs(request.data?.scheduledDate).format("MM/DD/YYYY")
-                : "an unknown date"
-            } has been scheduled.`,
+            message: `Hello ${request.data?.name}, your request at ${formattedDate} has been scheduled.`,
           }),
         });
 
@@ -118,9 +120,9 @@ const Planning = () => {
     setIsLoading(true);
     try {
       const updatedRequests = await Promise.all(
-        allPlannedRequests.map((request) =>
-          updateRequestStatus(request._id, "scheduled")
-        )
+        allPlannedRequests
+          .filter((req) => req.status !== "scheduled")
+          .map((request) => updateRequestStatus(request._id, "scheduled"))
       );
       const successfulUpdates = updatedRequests.filter((res) => !res.error);
 
@@ -132,7 +134,7 @@ const Planning = () => {
       setAllPlannedRequest((prevRequests) =>
         prevRequests.map((req) =>
           successfulUpdates.find((updated) => updated.data._id === req._id)
-            ? { ...req, status: "scheduled" }
+            ? { ...req, status: "scheduled", confirmationEmailSend: true }
             : req
         )
       );
@@ -168,7 +170,7 @@ const Planning = () => {
             allPlannedRequests={allPlannedRequests}
             rescheduleSelectedTimeSlot={rescheduleSelectedTimeSlot}
           />
-          {allPlannedRequests.length > 0 && (
+          {showConfirmationBtn(allPlannedRequests)&& (
             <div className="text-center mt-10">
               <PrimaryBtn
                 text={"Confirm Request"}

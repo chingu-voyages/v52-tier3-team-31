@@ -24,7 +24,7 @@ const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
               onMouseEnter={() => setIsHovered(idx)}
               onMouseLeave={() => setIsHovered(null)}
             >
-              {isHovered === idx ? (
+              {isHovered === idx && request.status !== "scheduled" ? (
                 <Dropdown
                   values={availableTimeSlots}
                   setSelectedValue={(time)=> rescheduleSelectedTimeSlot(time, request._id)}
