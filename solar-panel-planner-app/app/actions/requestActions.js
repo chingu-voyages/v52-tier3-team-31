@@ -130,7 +130,6 @@ export async function getAllPlanVisitRequests() {
   }
 }
 
-// TODO: THE RESULT IS NOT CORRECT! NOT ALL REQUESTS ARE BEING RETURNED.
 export async function getScheduledRequestsForDate(date) {
   const start = dayjs(date, "MM-DD-YYYY").utc(true);
   const end = start.add(1, "day");

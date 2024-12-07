@@ -34,8 +34,8 @@ const Planning = () => {
     const getAllRequestsData = async () => {
       const allRequest = await getAllPlanVisitRequests();
       const filtered = allRequest.data.filter((request) => {
-        const requestedDate = dayjs(request.requestedDate).format("MM/DD/YYYY");
-        return requestedDate === selectedDate;
+        const scheduledDate = dayjs(request.scheduledDate).format("MM/DD/YYYY");
+        return scheduledDate === selectedDate;
       });
       setAllPlannedRequest(filtered);
     };

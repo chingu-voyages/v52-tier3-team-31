@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import dayjs from "dayjs";
 const borderStatusColors = {
   new: "border-status-new",
   scheduled: "border-status-scheduled",
@@ -18,7 +18,7 @@ const RequestCard = ({ request }) => {
     >
       <div className="px-5 py-4 border-b bg-gray-50 flex justify-between items-center">
         <div className="flex items-center gap-2 text-lg font-semibold">
-          📅 <span>{scheduledDate.toLocaleString()}</span>
+          📅 <span>{dayjs(scheduledDate).format("ddd D MMM YYYY hh:mmA")}</span>
         </div>
         <span
           className={`px-3 py-1 text-sm font-medium rounded-full text-white ${
