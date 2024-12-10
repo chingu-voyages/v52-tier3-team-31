@@ -2,8 +2,8 @@ import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <div className="bg-gray-900 max-w-8xl mx-auto">
-      <div className="relative isolate overflow-hidden">
+    <div className="max-w-8xl mx-auto">
+      <div className="relative isolate overflow-hidden 2xl:rounded-xl">
         <Image
           width={0}
           height={0}
@@ -11,7 +11,7 @@ const HeroSection = () => {
           alt=""
           quality={90}
           src="/images/hero-bg2.jpeg"
-          className="absolute inset-0 -z-10 size-full object-cover object-center"
+          className="absolute inset-0 -z-10 size-full object-cover object-center "
         />
         <div className="mx-auto md:ml-12 max-w-7xl px-6 lg:px-8">
           <div className="absolute bg-gradient-to-r from-black via-black to-transparent w-2/3 h-full left-0 opacity-50 -z-10" />
