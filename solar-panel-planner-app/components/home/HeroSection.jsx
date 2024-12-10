@@ -1,40 +1,42 @@
-"use client";
-import React from "react";
-import PrimaryBtn from "../buttons/PrimaryBtn";
-import OutlinedBtn from "../buttons/OutlinedBtn";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const HeroSection = () => {
-  const router = useRouter();
-
-  const handleNewRequest = () => {
-    router.push("/request/new");
-  };
-
-  const handleManageRequest = () =>{
-    router.push("/planning")
-  }
-
   return (
-    <div className="relative w-full h-[60vh] bg-bannerImg bg-cover bg-center">
-      <div className="absolute inset-0 bg-black bg-opacity-70"></div>
-      <div className="relative flex flex-col sm:flex-row items-center sm:items-end justify-end sm:justify-between h-full p-4 sm:p-10 gap-10">
-        <div className="rounded-lg bg-white/30 p-6 w-full sm:w-2/5">
-          <h1 className="text-white text-4xl mb-3">
-            Effortless Solar Planning for a Brighter Future
-          </h1>
-          <p className="text-slate-300">
-            Schedule your solar panel evaluation with ease, and let us handle
-            the rest. Join Los Angeles' mission to embrace sustainable energy
-            today!
-          </p>
-        </div>
-        <div className="flex flex-row sm:flex-col">
-          <PrimaryBtn text="New Request" onClickFn={handleNewRequest} />
-          <OutlinedBtn
-            text="Mange Request"
-            onClickFn={handleManageRequest}
-          />
+    <div className="bg-gray-900">
+      <div className="relative isolate overflow-hidden pt-14 ">
+        <Image
+          width={0}
+          height={0}
+          sizes="100vh"
+          alt=""
+          src="/images/hero-bg2.jpeg"
+          className="absolute inset-0 -z-10 size-full object-cover"
+        />
+
+        <div className="mx-auto md:ml-12 max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto md:ml-12 2xl:ml-24 max-w-2xl py-32 sm:py-48 lg:py-56">
+            <div className="text-left">
+              <h1 className="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl">
+                Effortless Solar Planning for a Brighter Future
+              </h1>
+              <p className="mt-8 max-w-md text-pretty text-lg font-medium text-gray-100 sm:text-xl/8">
+                Schedule your solar panel evaluation with ease, and let us
+                handle the rest. Join Los Angeles' mission to embrace
+                sustainable energy today!
+              </p>
+              <div className="mt-10 flex items-center justify-start gap-x-6">
+                <a
+                  href="/request/new"
+                  className="rounded-md bg-secondary-light px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
+                >
+                  Book an Appointment
+                </a>
+                <a href="#" className="text-sm/6 font-semibold text-white">
+                  How it works <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

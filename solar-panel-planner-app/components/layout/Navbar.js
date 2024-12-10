@@ -6,9 +6,12 @@ const Navbar = async () => {
   const session = await auth();
 
   return (
-    <header className="bg-white shadow-sm px-4 lg:px-8 py-4">
+    <header className="shadow-sm px-4 lg:px-8 py-4 h-16 bg-white z-10">
       <nav className="flex justify-between">
-        <Link href="/" className="tracking-tighter bg-gradient-to-r from-orange-800 via-orange-500 to-orange-900 bg-clip-text text-transparent font-extrabold text-2xl ">
+        <Link
+          href="/"
+          className="tracking-tighter bg-gradient-to-r from-orange-800 via-orange-500 to-orange-900 bg-clip-text text-transparent font-extrabold text-2xl "
+        >
           ⚡️ BrightGrid
         </Link>
         <div className="flex items-center gap-5">
