@@ -25,22 +25,14 @@ const Testimonials = () => {
           </div>
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 text-sm/6 text-gray-900 sm:mt-20 sm:grid-cols-2">
             {testimonialsContent.map((testimonial) => (
-              <div
-                key={testimonial.name}
-                className="space-y-8 xl:contents xl:space-y-0"
-              >
-                <figure
-                  key={testimonial.name}
-                  className="rounded-xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-                >
+              <div key={testimonial.name} className="shadow-md">
+                <div key={testimonial.name} className="rounded-md bg-white p-6">
                   <p className="text-gray-900">{`“${testimonial.message}”`}</p>
-                  <figcaption className="mt-6 flex items-center gap-x-4">
-                    <div>
-                      <div className="font-semibold">{testimonial.name}</div>
-                      <div className="text-gray-600">{`🗓️ ${testimonial.dateOfVisit}`}</div>
-                    </div>
-                  </figcaption>
-                </figure>
+                  <div className="mt-6 flex flex-col items-left gap-x-4">
+                    <div className="font-semibold">{testimonial.name}</div>
+                    <div className="text-gray-600">{`${testimonial.dateOfVisit}`}</div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
