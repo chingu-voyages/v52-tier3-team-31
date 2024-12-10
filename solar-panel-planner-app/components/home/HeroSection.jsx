@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <div className="max-w-8xl mx-auto">
+    <section className="max-w-8xl mx-auto mb-12">
       <div className="relative isolate overflow-hidden 2xl:rounded-xl">
         <Image
           width={0}
@@ -10,7 +10,7 @@ const HeroSection = () => {
           sizes="100vh"
           alt=""
           quality={90}
-          src="/images/hero-bg2.jpeg"
+          src="/images/hero-bg.jpeg"
           className="absolute inset-0 -z-10 size-full object-cover object-center "
         />
         <div className="mx-auto md:ml-12 max-w-7xl px-6 lg:px-8">
@@ -31,7 +31,7 @@ const HeroSection = () => {
               <div className="mt-10 flex items-center justify-start gap-x-6">
                 <a
                   href="/request/new"
-                  className="rounded-md bg-secondary-light px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
+                  className="rounded-md bg-secondary-light px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400"
                 >
                   Book an Appointment
                 </a>
@@ -43,7 +43,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
