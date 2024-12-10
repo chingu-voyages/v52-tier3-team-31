@@ -2,22 +2,26 @@ import Image from "next/image";
 
 const HeroSection = () => {
   return (
-    <div className="bg-gray-900">
-      <div className="relative isolate overflow-hidden pt-14 ">
+    <div className="bg-gray-900 max-w-8xl mx-auto">
+      <div className="relative isolate overflow-hidden">
         <Image
           width={0}
           height={0}
           sizes="100vh"
           alt=""
+          quality={90}
           src="/images/hero-bg2.jpeg"
-          className="absolute inset-0 -z-10 size-full object-cover"
+          className="absolute inset-0 -z-10 size-full object-cover object-center"
         />
-
         <div className="mx-auto md:ml-12 max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto md:ml-12 2xl:ml-24 max-w-2xl py-32 sm:py-48 lg:py-56">
+          <div className="absolute bg-gradient-to-r from-black via-black to-transparent w-2/3 h-full left-0 opacity-50 -z-10" />
+          <div className="mx-auto md:ml-12 2xl:ml-24 max-w-2xl py-12 sm:py-24 lg:py-32 xl:py-54">
             <div className="text-left">
-              <h1 className="text-balance text-5xl font-semibold tracking-tight text-white sm:text-7xl">
-                Effortless Solar Planning for a Brighter Future
+              <h1 className="text-balance text-5xl font-semibold tracking-tight text-white md:text-7xl">
+                Simplify Your Solar Journey with <br />
+                <span className="rounded-lg text-orange-00 font-extrabold  italic">
+                  Effortless Scheduling
+                </span>{" "}
               </h1>
               <p className="mt-8 max-w-md text-pretty text-lg font-medium text-gray-100 sm:text-xl/8">
                 Schedule your solar panel evaluation with ease, and let us
