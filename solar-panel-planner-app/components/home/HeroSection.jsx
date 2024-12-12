@@ -4,7 +4,7 @@ import PrimaryBtn from "../buttons/PrimaryBtn";
 import OutlinedBtn from "../buttons/OutlinedBtn";
 import { useRouter } from "next/navigation";
 
-const HeroSection = () => {
+const HeroSection = ({setShowEmailVerify}) => {
   const router = useRouter();
 
   const handleNewRequest = () => {
@@ -12,7 +12,7 @@ const HeroSection = () => {
   };
 
   const handleManageRequest = () =>{
-    router.push("/planning")
+    setShowEmailVerify(true);
   }
 
   return (

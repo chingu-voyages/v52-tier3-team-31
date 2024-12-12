@@ -11,10 +11,10 @@ import {
   updateRequestTimeSlot,
 } from "@/app/actions/requestActions";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
-import { toast } from "react-toastify";
-import { showConfirmationBtn } from "./rules";
 import PlanningMapView from "@/components/planning/PlanningMapView";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { showConfirmationBtn } from "./rules";
 
 const haversineDistance = ([lat1, lon1], [lat2, lon2]) => {
   const toRad = (x) => (x * Math.PI) / 180;
