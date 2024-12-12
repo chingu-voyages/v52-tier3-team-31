@@ -2,10 +2,12 @@ import React from "react";
 import { getRequestById } from "@/app/actions/requestActions";
 import RequestDetailMap from "@/components/RequestDetailMap";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
+import { auth } from "@/auth";
 const page = async ({ params }) => {
   const request = await getRequestById(params.id);
   const { name, email, phone, address, requestedDate, scheduledDate, status } =
     request.data;
+  const session = await auth();
   console.log(request);
   return (
     <div>
@@ -52,7 +54,11 @@ const page = async ({ params }) => {
               </div>
             </div>
             <div className="form-section flex gap-2 justify-center ">
-              <PrimaryBtn text={"Edit Request"} />
+              {session && session?.user ? (
+                <PrimaryBtn text={"Mark As Visited"} />
+              ) : (
+                <PrimaryBtn text={"Edit Request"} />
+              )}
               <PrimaryBtn text={"Cancel Request"} />
             </div>
           </div>
