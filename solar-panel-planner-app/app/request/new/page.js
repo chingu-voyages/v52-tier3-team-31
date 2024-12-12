@@ -1,9 +1,10 @@
 "use client";
-import { createRequest } from "@/app/actions/requestActions";
-import DateSelector from "@/components/newRequst/DateSelector";
 import React, { useState } from "react";
+import DateSelector from "@/components/newRequst/DateSelector";
+import { toast } from 'react-toastify';
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { createRequest } from "@/app/actions/requestActions";
 
 const initialFormData = {
   name: "",
@@ -111,11 +112,11 @@ const Request = () => {
         await createRequest(updatedFormData);
         handleReset();
         route.push('/')
+        toast('Your request has been submitted!')
       } catch (error) {
         console.log("Failed to create request", error.message);
       }
     }
-
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -212,8 +213,12 @@ const Request = () => {
           {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
         </div>
         <div className="flex gap-5">
-          <button className="btn-primary" type="submit">Submit</button>
-          <button className="btn-outline" type="button" onClick={handleReset}>Reset</button>
+          <button className="btn-primary" type="submit">
+            Submit
+          </button>
+          <button className="btn-outline" type="button" onClick={handleReset}>
+            Reset
+          </button>
         </div>
       </form>
     </div>

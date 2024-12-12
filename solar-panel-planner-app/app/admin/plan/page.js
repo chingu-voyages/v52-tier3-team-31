@@ -13,6 +13,46 @@ import {
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import PlanningMapView from "@/components/planning/PlanningMapView";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { showConfirmationBtn } from "./rules";
+
+const haversineDistance = ([lat1, lon1], [lat2, lon2]) => {
+  const toRad = (x) => (x * Math.PI) / 180;
+  const R = 6371; 
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; 
+};
+
+const planShortestRoute = (appointments, startPoint) => {
+  const plannedRoute = [];
+  let currentPoint = startPoint || appointments[0]; 
+  const unvisited = [...appointments];
+
+  while (unvisited.length > 0) {
+    const nearest = unvisited.reduce((nearest, appointment) => {
+      const distance = haversineDistance(
+        currentPoint.location.coordinates,
+        appointment.location.coordinates
+      );
+      return !nearest || distance < nearest.distance
+        ? { distance, appointment }
+        : nearest;
+    }, null);
+
+    plannedRoute.push(nearest.appointment);
+ 
+    unvisited.splice(unvisited.indexOf(nearest.appointment), 1);
+  
+    currentPoint = nearest.appointment;
+  }
+
+  return plannedRoute;
+};
 
 const Planning = () => {
   const router = useRouter();
@@ -21,6 +61,7 @@ const Planning = () => {
     dayjs().format("MM/DD/YYYY")
   );
   const [allPlannedRequests, setAllPlannedRequest] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
   useEffect(() => {
     let imageData = sessionStorage.getItem("map-image");
@@ -34,7 +75,17 @@ const Planning = () => {
         const scheduledDate = dayjs(request.scheduledDate).format("MM/DD/YYYY");
         return scheduledDate === selectedDate;
       });
-      setAllPlannedRequest(filtered);
+
+      const hasNewRequest = filtered.some((req) => req.status === 'new');
+
+      if(hasNewRequest){
+        const startPoint = filtered[0]; 
+        const plannedRoute = planShortestRoute(filtered, startPoint);
+  
+        setAllPlannedRequest(plannedRoute);
+      }else{
+        setAllPlannedRequest(filtered);
+      }  
     };
     getAllRequestsData();
   }, [selectedDate]);
@@ -72,6 +123,11 @@ const Planning = () => {
   const sendConfirmationEmail = async (requests) => {
     try {
       const emailPromises = requests.map(async (request) => {
+        const scheduledDate = request.data?.scheduledDate;
+        const formattedDate = dayjs(scheduledDate).isValid()
+          ? dayjs(scheduledDate).format("MM/DD/YYYY hh:mm A")
+          : "an unknown date";
+
         const response = await fetch("/api/send-email", {
           method: "POST",
           headers: {
@@ -83,11 +139,7 @@ const Planning = () => {
               { name: request.data?.name, address: request.data?.email },
             ],
             subject: "Your Request is Confirmed",
-            message: `Hello ${request.data?.name}, your request at ${
-              dayjs(request.data?.scheduledDate).isValid()
-                ? dayjs(request.data?.scheduledDate).format("MM/DD/YYYY")
-                : "an unknown date"
-            } has been scheduled.`,
+            message: `Hello ${request.data?.name}, your request at ${formattedDate} has been scheduled.`,
           }),
         });
 
@@ -116,27 +168,32 @@ const Planning = () => {
   };
 
   const confirmRequestsFn = async () => {
+    if (isLoading) return false;
+    setIsLoading(true);
     try {
       const updatedRequests = await Promise.all(
-        allPlannedRequests.map((request) =>
-          updateRequestStatus(request._id, "scheduled")
-        )
+        allPlannedRequests
+          .filter((req) => req.status !== "scheduled")
+          .map((request) => updateRequestStatus(request._id, "scheduled"))
       );
       const successfulUpdates = updatedRequests.filter((res) => !res.error);
 
       if (successfulUpdates.length > 0) {
         await sendConfirmationEmail(successfulUpdates);
+        toast("Confirmation emails have been successfully sent!");
       }
 
       setAllPlannedRequest((prevRequests) =>
         prevRequests.map((req) =>
           successfulUpdates.find((updated) => updated.data._id === req._id)
-            ? { ...req, status: "scheduled" }
+            ? { ...req, status: "scheduled", confirmationEmailSend: true }
             : req
         )
       );
     } catch (error) {
       console.error("Error confirming requests:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -184,11 +241,12 @@ const Planning = () => {
                   )}
                   rescheduleSelectedTimeSlot={rescheduleSelectedTimeSlot}
                 />
-                {allPlannedRequests.length > 0 && (
+                {showConfirmationBtn(allPlannedRequests) && (
                   <div className="text-center mt-10">
                     <PrimaryBtn
                       text={"Confirm Request"}
                       onClickFn={confirmRequestsFn}
+                      isDisabled={isLoading}
                     />
                   </div>
                 )}
