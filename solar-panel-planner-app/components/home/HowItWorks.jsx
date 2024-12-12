@@ -3,7 +3,7 @@ import { howItWorksContent } from "./howItWorksContent";
 import HowItWorksCard from "./HowItWorksCard";
 const HowItWorks = () => {
   return (
-    <section>
+    <section id="how-it-works-section">
       <div className=" px-6 py-24 sm:py-12 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-base/7 font-semibold text-secondary-light">

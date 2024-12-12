@@ -2,7 +2,7 @@ import { testimonialsContent } from "./testimonialsContent";
 import Image from "next/image";
 const Testimonials = () => {
   return (
-    <section>
+    <section id="testimonials-section">
       <div className="relative isolate overflow-hidden 2xl:rounded-t-xl">
         <Image
           width={0}

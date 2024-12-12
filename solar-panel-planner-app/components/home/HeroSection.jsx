@@ -1,21 +1,21 @@
 import Image from "next/image";
-
 const HeroSection = () => {
   return (
-    <section className="max-w-8xl mx-auto mb-12">
-      <div className="relative isolate overflow-hidden 2xl:rounded-xl">
+    <section id="hero-section" className="max-w-8xl mx-auto mb-12 ">
+      <div className="relative isolate overflow-hidden 2xl:rounded-xl md:-inset-y-20 2xl:-inset-0">
         <Image
           width={0}
           height={0}
           sizes="100vh"
           alt=""
           quality={90}
+          priority={true}
           src="/images/hero-bg.jpeg"
           className="absolute inset-0 -z-10 size-full object-cover object-center "
         />
         <div className="mx-auto md:ml-12 max-w-7xl px-6 lg:px-8">
-          <div className="absolute bg-gradient-to-r from-black via-black to-transparent w-2/3 h-full left-0 opacity-50 -z-10" />
-          <div className="mx-auto md:ml-12 2xl:ml-24 max-w-2xl py-12 sm:py-24 lg:py-32 xl:py-54">
+          <div className="absolute bg-gradient-to-r from-black from-0% via-black via-70% to-transparent w-2/3 h-full left-0 opacity-60 -z-10" />
+          <div className="mx-auto md:ml-12 2xl:ml-24 max-w-2xl  py-56 ">
             <div className="text-left">
               <h1 className="text-balance text-5xl font-semibold tracking-tight text-white md:text-7xl">
                 Simplify Your Solar Journey with <br />
@@ -35,7 +35,10 @@ const HeroSection = () => {
                 >
                   Book an Appointment
                 </a>
-                <a href="#" className="text-sm/6 font-semibold text-white">
+                <a
+                  href="#how-it-works-section"
+                  className="text-sm/6 font-semibold text-white"
+                >
                   How it works <span aria-hidden="true">→</span>
                 </a>
               </div>

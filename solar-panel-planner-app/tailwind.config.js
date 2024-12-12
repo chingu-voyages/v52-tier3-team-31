@@ -41,9 +41,6 @@ module.exports = {
           visited: "#6B7280",
           "visited-bg": "#D1D5DB",
         },
-
-        // background: "var(--background)",
-        // foreground: "var(--foreground)",
       },
     },
   },
