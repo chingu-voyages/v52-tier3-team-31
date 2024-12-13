@@ -3,10 +3,19 @@ import { getRequestById } from "@/app/actions/requestActions";
 import RequestDetailMap from "@/components/RequestDetailMap";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import { auth } from "@/auth";
+import RequestDetailsBtns from "./RequestDetailsBtns";
 const page = async ({ params }) => {
   const request = await getRequestById(params.id);
-  const { name, email, phone, address, requestedDate, scheduledDate, status } =
-    request.data;
+  const {
+    name,
+    email,
+    phone,
+    address,
+    requestedDate,
+    scheduledDate,
+    status,
+    _id,
+  } = request.data;
   const session = await auth();
   console.log(request);
   return (
@@ -39,8 +48,12 @@ const page = async ({ params }) => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 my-4 justify-between  ">
-            <div className="form-section text-center flex-col justify-center">
-              <div className=" flex flex-col sm:flex-row gap-4">
+            <div
+              className={`form-section text-center flex-col justify-center ${
+                (status === "visited" || status === "cancelled") ? "w-full" : ""
+              }`}
+            >
+              <div className=" flex flex-col sm:flex-row gap-4 justify-between">
                 <div>
                   <dt className="form-label">Appointment Date</dt>
                   <dd className="text-xl">{scheduledDate.toLocaleString()}</dd>
@@ -53,14 +66,9 @@ const page = async ({ params }) => {
                 </div>
               </div>
             </div>
-            <div className="form-section flex gap-2 justify-center ">
-              {session && session?.user ? (
-                <PrimaryBtn text={"Mark As Visited"} />
-              ) : (
-                <PrimaryBtn text={"Edit Request"} />
-              )}
-              <PrimaryBtn text={"Cancel Request"} />
-            </div>
+            {!(status === "visited" || status === "cancelled") && (
+              <RequestDetailsBtns session={session} requestId={_id} />
+            )}
           </div>
         </div>
       ) : (
