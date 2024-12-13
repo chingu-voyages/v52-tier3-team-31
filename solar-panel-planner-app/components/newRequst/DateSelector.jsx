@@ -4,10 +4,14 @@ import dayjs from "dayjs";
 import { getBookedTimeSlots } from "@/app/actions/planningActions";
 import { timeSlots } from "@/utils/timesSlots";
 
-const DateSelector = ({ onDateSlotConfirm }) => {
+const DateSelector = ({ onDateSlotConfirm, initialSelectedDate, initialSelectedSlot }) => {
   const [bookedSlots, setBookedSlots] = useState({});
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(initialSelectedDate || "");
+  const [selectedSlot, setSelectedSlot] = useState(
+    initialSelectedSlot
+    ? timeSlots.find((slot) => slot.start === initialSelectedSlot)
+    : null
+  );
 
   useEffect(() => {
     let isMounted = true;

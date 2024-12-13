@@ -1,7 +1,6 @@
 import React from "react";
 import { getRequestById } from "@/app/actions/requestActions";
 import RequestDetailMap from "@/components/RequestDetailMap";
-import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import { auth } from "@/auth";
 import RequestDetailsBtns from "./RequestDetailsBtns";
 const page = async ({ params }) => {
