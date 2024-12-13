@@ -10,22 +10,23 @@ export async function POST(req) {
     const { email } = body;
 
     if (!email) {
-      return new Response(
-        JSON.stringify({ error: "Email is required" }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Email is required" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const session = await withSession();
 
-    console.log("Session before:", session);
-
+    if (session) {
+      console.log("Session before:", session);
+    }
     await connectToDatabase();
 
     const existingRequest = await Request.findOne({ email });
     if (!existingRequest) {
       return new Response(
-        JSON.stringify({ error: "No data found for this email" }),
+        JSON.stringify({ error: "No request found for this email" }),
         { status: 404, headers: { "Content-Type": "application/json" } }
       );
     }
@@ -44,7 +45,7 @@ export async function POST(req) {
       await sendEmail({
         sender: "noreply@gmail.com",
         recipients: [{ address: email }],
-        subject: "Your OTP Code",
+        subject: "Your OTP Code from BrightGrid",
         message,
       });
 
@@ -54,16 +55,16 @@ export async function POST(req) {
       );
     } catch (error) {
       console.error("Error sending email:", error);
-      return new Response(
-        JSON.stringify({ error: "Failed to send OTP" }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Failed to send OTP" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
     }
   } catch (error) {
     console.error("Error processing request:", error);
-    return new Response(
-      JSON.stringify({ error: "Internal server error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
