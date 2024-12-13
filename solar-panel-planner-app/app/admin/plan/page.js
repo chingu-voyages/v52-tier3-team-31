@@ -11,10 +11,48 @@ import {
   updateRequestTimeSlot,
 } from "@/app/actions/requestActions";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
-import { toast } from "react-toastify";
-import { showConfirmationBtn } from "./rules";
 import PlanningMapView from "@/components/planning/PlanningMapView";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { showConfirmationBtn } from "./rules";
+
+const haversineDistance = ([lat1, lon1], [lat2, lon2]) => {
+  const toRad = (x) => (x * Math.PI) / 180;
+  const R = 6371; 
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c; 
+};
+
+const planShortestRoute = (appointments, startPoint) => {
+  const plannedRoute = [];
+  let currentPoint = startPoint || appointments[0]; 
+  const unvisited = [...appointments];
+
+  while (unvisited.length > 0) {
+    const nearest = unvisited.reduce((nearest, appointment) => {
+      const distance = haversineDistance(
+        currentPoint.location.coordinates,
+        appointment.location.coordinates
+      );
+      return !nearest || distance < nearest.distance
+        ? { distance, appointment }
+        : nearest;
+    }, null);
+
+    plannedRoute.push(nearest.appointment);
+ 
+    unvisited.splice(unvisited.indexOf(nearest.appointment), 1);
+  
+    currentPoint = nearest.appointment;
+  }
+
+  return plannedRoute;
+};
 
 const Planning = () => {
   const router = useRouter();
@@ -37,7 +75,17 @@ const Planning = () => {
         const scheduledDate = dayjs(request.scheduledDate).format("MM/DD/YYYY");
         return scheduledDate === selectedDate;
       });
-      setAllPlannedRequest(filtered);
+
+      const hasNewRequest = filtered.some((req) => req.status === 'new');
+
+      if(hasNewRequest){
+        const startPoint = filtered[0]; 
+        const plannedRoute = planShortestRoute(filtered, startPoint);
+  
+        setAllPlannedRequest(plannedRoute);
+      }else{
+        setAllPlannedRequest(filtered);
+      }  
     };
     getAllRequestsData();
   }, [selectedDate]);

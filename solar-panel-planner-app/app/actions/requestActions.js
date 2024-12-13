@@ -116,9 +116,6 @@ export async function getAllPlanVisitRequests() {
     requests = requests.filter((request) => {
       return request.status === "new" || request.status === "scheduled";
     });
-    requests = requests.filter((request) => {
-      return request.status === "new" || request.status === "scheduled";
-    });
     if (requests.length > 0) {
       return { data: requests };
     } else {

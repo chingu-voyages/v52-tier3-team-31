@@ -1,5 +1,20 @@
-import Image from "next/image";
-const HeroSection = () => {
+"use client";
+import React from "react";
+import PrimaryBtn from "../buttons/PrimaryBtn";
+import OutlinedBtn from "../buttons/OutlinedBtn";
+import { useRouter } from "next/navigation";
+
+const HeroSection = ({ setShowEmailVerify }) => {
+  const router = useRouter();
+
+  const handleNewRequest = () => {
+    router.push("/request/new");
+  };
+
+  const handleManageRequest = () => {
+    setShowEmailVerify(true);
+  };
+
   return (
     <section id="hero-section" className="max-w-8xl mx-auto mb-12 ">
       <div className="relative isolate overflow-hidden 2xl:rounded-xl md:-inset-y-20 2xl:-inset-0">
