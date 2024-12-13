@@ -2,13 +2,12 @@ import React from "react";
 import { auth, signIn, signOut } from "@/auth";
 import Link from "next/link";
 import { RiAdminLine } from "react-icons/ri";
-import Button from "@/components/buttons/Button";
 
 const Navbar = async () => {
   const session = await auth();
 
   return (
-    <header className="w-full px-12 lg:px-16 2x:mx-60 py-4 z-10 bg-transparent text-black md:text-white 2xl:text-black text-sm 2xl">
+    <header className="w-full px-12 lg:px-16 2x:mx-60 py-4 z-10 bg-transparent text-black md:text-black 2xl:text-black text-sm ">
       <nav className="flex justify-between">
         <Link
           href="/"
