@@ -8,13 +8,12 @@ const borderStatusColors = {
 };
 
 const RequestCard = ({ request }) => {
-  const { name, email, phone, address, requestedDate, scheduledDate, status } =
-    request;
+  const { name, email, phone, address, scheduledDate, status } = request;
 
   return (
     <Link
       href={`/request/${request._id}`}
-      className={`overflow-hidden rounded-lg bg-white shadow-md border-l-8  ${borderStatusColors[status]} transition-transform hover:scale-105`}
+      className={`overflow-hidden rounded-lg bg-white shadow-md border-l-8  ${borderStatusColors[status]} transition-transform hover:scale-[102%] flex-1`}
     >
       <div className="px-5 py-4 border-b bg-gray-50 flex justify-between items-center">
         <div className="flex items-center gap-2 text-lg font-semibold">

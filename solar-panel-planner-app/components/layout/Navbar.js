@@ -1,16 +1,10 @@
 import React from "react";
-import { auth, signIn, signOut } from "@/auth";
 import Link from "next/link";
+import { auth, signIn, signOut } from "@/auth";
 import { RiAdminLine } from "react-icons/ri";
 import DropdownNav from "../ui/DropdownNav";
 const Navbar = async () => {
   const session = await auth();
-
-  const handleSignOut = async () => {
-    console.log("handle sign out");
-    // "use server";
-    // await signOut({ redirectTo: "/" });
-  };
 
   return (
     <header className="w-full px-12 lg:px-16 2x:mx-60 py-4 z-10 bg-transparent text-black md:text-white 2xl:text-black text-sm 2xl max-h-[16px]">

@@ -9,11 +9,11 @@ const DateView = ({ selectedDate, setSelectedDate, dates }) => {
             <button
               key={idx}
               onClick={() => setSelectedDate(date.format("MM/DD/YYYY"))}
-              className={`p-3  ${
+              className={`p-3 ${
                 isSelected
-                  ? "bg-primary-dark text-white hover:bg-primary-dark"
-                  : "text-primary-dark"
-              }  hover:bg-gray-100`}
+                  ? "bg-primary-dark text-white font-semibold rounded-sm "
+                  : "text-primary-dark hover:bg-gray-100"
+              } `}
             >
               {date.format("D MMMM")}{" "}
             </button>

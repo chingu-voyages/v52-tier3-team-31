@@ -18,19 +18,22 @@ import { showConfirmationBtn } from "./rules";
 
 const haversineDistance = ([lat1, lon1], [lat2, lon2]) => {
   const toRad = (x) => (x * Math.PI) / 180;
-  const R = 6371; 
+  const R = 6371;
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lon2 - lon1);
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(toRad(lat1)) *
+      Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; 
+  return R * c;
 };
 
 const planShortestRoute = (appointments, startPoint) => {
   const plannedRoute = [];
-  let currentPoint = startPoint || appointments[0]; 
+  let currentPoint = startPoint || appointments[0];
   const unvisited = [...appointments];
 
   while (unvisited.length > 0) {
@@ -45,9 +48,9 @@ const planShortestRoute = (appointments, startPoint) => {
     }, null);
 
     plannedRoute.push(nearest.appointment);
- 
+
     unvisited.splice(unvisited.indexOf(nearest.appointment), 1);
-  
+
     currentPoint = nearest.appointment;
   }
 
@@ -76,16 +79,16 @@ const Planning = () => {
         return scheduledDate === selectedDate;
       });
 
-      const hasNewRequest = filtered.some((req) => req.status === 'new');
+      const hasNewRequest = filtered.some((req) => req.status === "new");
 
-      if(hasNewRequest){
-        const startPoint = filtered[0]; 
+      if (hasNewRequest) {
+        const startPoint = filtered[0];
         const plannedRoute = planShortestRoute(filtered, startPoint);
-  
+
         setAllPlannedRequest(plannedRoute);
-      }else{
+      } else {
         setAllPlannedRequest(filtered);
-      }  
+      }
     };
     getAllRequestsData();
   }, [selectedDate]);
@@ -202,30 +205,31 @@ const Planning = () => {
   };
 
   const handleExportToPDF = () => {
-    router.push(`/admin/plan/export?date=${selectedDate}&map=${showMap}`);
+    window.open(
+      `/admin/plan/export?date=${selectedDate}&map=${showMap}`,
+      "_blank"
+    );
   };
 
   return (
-    <div className="mx-auto ">
-      <div className="flex justify-between items-center sm:justify-center">
-        <h1 className="page-heading mt-5">Plan Visits</h1>
-        <div className="block sm:hidden">
+    <div className="w-full mx-auto max-w-screen-xl ">
+      <h1 className="page-heading mt-5">Plan Visits</h1>
+      <div className="p-4 rounded-sm">
+        <div className="block md:hidden">
           <Dropdown
             values={dates.map((date) => date.format("MM/DD/YYYY"))}
             setSelectedValue={setSelectedDate}
           />
         </div>
-      </div>
-      <div className="p-4 rounded-sm ">
-        <div className="lg:mx-40 flex gap-4 ">
-          <div className="hidden sm:block sm:w-[20%] ">
+        <div className="md:mx-10 xl:mx-20 2xl:mx-40 flex gap-4">
+          <div className="hidden md:block min-w-[20%]">
             <DateView
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
               dates={dates}
             />
           </div>
-          <div className="w-[100%] sm:w-[calc(100%-20%)] rounded-lg bg-white border">
+          <div className="w-[100%] sm:w-[calc(100%-20%)] rounded-lg bg-white border flex-1">
             <PlanningHeader
               selectedDate={selectedDate}
               toggleView={handleViewSwitch}
