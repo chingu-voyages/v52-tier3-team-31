@@ -13,7 +13,7 @@ const Navbar = async () => {
   };
 
   return (
-    <header className="w-full px-12 lg:px-16 2x:mx-60 py-4 z-10 bg-transparent text-black md:text-white 2xl:text-black text-sm 2xl max-h-[16px]">
+    <header className="w-full px-12 lg:px-16 2x:mx-60 py-4 z-10 bg-transparent text-black md:text-black 2xl:text-black text-sm 2xl max-h-[16px]">
       <nav className="flex justify-between">
         <Link
           href="/"
