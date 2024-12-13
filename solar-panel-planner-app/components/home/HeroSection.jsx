@@ -4,7 +4,7 @@ import EmailVerificationModal from "../request/EmailVerificationModal";
 const HeroSection = () => {
   return (
     <section id="hero-section" className="max-w-8xl mx-auto mb-12 ">
-      <div className="relative isolate overflow-hidden 2xl:rounded-xl md:-inset-y-20 2xl:-inset-0">
+      <div className="relative isolate overflow-hidden 2xl:rounded-xl -inset-y-20 2xl:-inset-0">
         <Image
           width={0}
           height={0}
