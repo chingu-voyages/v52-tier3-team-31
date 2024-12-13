@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { getBookedTimeSlots } from "@/app/actions/planningActions";
@@ -20,7 +20,7 @@ const DateSelector = ({ onDateSlotConfirm, initialSelectedDate, initialSelectedS
       try {
         const slots = await getBookedTimeSlots();
         if (isMounted) {
-          setBookedSlots(slots); 
+          setBookedSlots(slots);
         }
       } catch (error) {
         console.error("Error fetching booked slots:", error);
@@ -38,6 +38,7 @@ const DateSelector = ({ onDateSlotConfirm, initialSelectedDate, initialSelectedS
     setSelectedDate(e.target.value);
     setSelectedSlot(null);
   };
+  console.log('selected date', selectedDate)
 
   const handleSelectedSlot = (slot) => {
     setSelectedSlot(slot);
@@ -49,45 +50,47 @@ const DateSelector = ({ onDateSlotConfirm, initialSelectedDate, initialSelectedS
 
   const todaysDate = dayjs().format("YYYY-MM-DD");
 
-
   const isSlotBooked = (date, start) => {
     const bookedHours = bookedSlots[dayjs(date).format("MM/DD/YYYY")] || [];
-    const startHour = parseInt(start.split(":")[0], 10); 
+    const startHour = parseInt(start.split(":")[0], 10);
     return bookedHours.includes(startHour);
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <input
         type="date"
         value={selectedDate}
         onChange={handleDateChange}
         min={todaysDate}
+        className="form-field"
       />
 
       {selectedDate && (
         <div>
-          <h3>Available Time Slots:</h3>
-          <div className="flex flex-wrap">
+          <h3 className="form-label">Select a prefrred time slot</h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
             {timeSlots.map((slot, index) => (
               <div
                 key={slot.start}
-                onClick={() => !isSlotBooked(selectedDate, slot.start) && handleSelectedSlot(slot)}
+                onClick={() =>
+                  !isSlotBooked(selectedDate, slot.start) &&
+                  handleSelectedSlot(slot)
+                }
                 style={{
-                  margin: "5px",
                   padding: "10px",
                   backgroundColor: isSlotBooked(selectedDate, slot.start)
-                  ? "red"
-                  : selectedSlot?.start === slot.start
-                  ? "green"
-                  : "gray",
+                    ? "red"
+                    : selectedSlot?.start === slot.start
+                    ? "green"
+                    : "gray",
                   color: "white",
-                  border: "none",
                   cursor: isSlotBooked(selectedDate, slot.start)
                     ? "not-allowed"
                     : "pointer",
-                  width: "170px",
                 }}
+                className="text-center rounded-md w-full font-semibold"
               >
                 {slot.label}
               </div>
@@ -103,7 +106,7 @@ const DateSelector = ({ onDateSlotConfirm, initialSelectedDate, initialSelectedS
             {
               timeSlots.find((slot) => slot.start === selectedSlot.start)?.label
             }{" "}
-            on {dayjs(selectedDate.start).format("MM/DD/YYYY")}
+            on {dayjs(selectedDate).format("MM/DD/YYYY")}
           </h4>
         </div>
       )}

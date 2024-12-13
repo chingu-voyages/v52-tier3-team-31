@@ -16,7 +16,6 @@ const page = async ({ params }) => {
     _id,
   } = request.data;
   const session = await auth();
-  console.log(request);
   return (
     <div>
       <h1 className="page-heading">Request Details</h1>
