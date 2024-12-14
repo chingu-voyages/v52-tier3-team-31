@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import { FcOk } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 

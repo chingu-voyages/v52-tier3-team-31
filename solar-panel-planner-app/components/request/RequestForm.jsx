@@ -6,9 +6,9 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { createRequest, updateRequestById } from "@/app/actions/requestActions";
 import dayjs from "dayjs";
-import { usedDynamicAPIs } from "next/dist/server/app-render/dynamic-rendering";
+import NewRequestSuccess from "../newRequst/NewRequestSuccess";
 
-const RequestForm = ({ initialFormData }) => {
+const RequestForm = ({ initialFormData, showSuccessMessage }) => {
   const [formData, setFormData] = useState(initialFormData);
   const [selectedDateSlot, setSelectedDateSlot] = useState(
     initialFormData?.scheduledDate
@@ -17,6 +17,7 @@ const RequestForm = ({ initialFormData }) => {
   );
   const [errors, setErrors] = useState({});
   const [suggestions, setSuggestions] = useState([]);
+
   const route = useRouter();
 
   const handleReset = () => {
@@ -100,7 +101,7 @@ const RequestForm = ({ initialFormData }) => {
     const updatedFormData = {
       ...formData,
       requestedDate: selectedDateSlot,
-      scheduledDate: selectedDateSlot
+      scheduledDate: selectedDateSlot,
     };
 
     const isValid = validateFields();
@@ -112,8 +113,9 @@ const RequestForm = ({ initialFormData }) => {
           : await createRequest(updatedFormData);
 
         handleReset();
-        route.push("/");
-        toast("Your request has been submitted!");
+        showSuccessMessage();
+        // route.push("/");
+        // toast("Your request has been submitted!");
       } catch (error) {
         console.log("Failed to create request", error.message);
       }
@@ -212,11 +214,18 @@ const RequestForm = ({ initialFormData }) => {
         />
         {errors.requestedDate && <p className="">{errors.requestedDate}</p>}
       </div>
-      <div className="flex gap-5">
-        <button className="btn-primary" type="submit">
+      <div className="w-full flex gap-5 flex-grow justify-center ">
+        <button
+          className="rounded-md bg-secondary-light px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400 w-full"
+          type="submit"
+        >
           {initialFormData?.requestedDate ? "Update" : "Submit"}
         </button>
-        <button className="btn-outline" type="button" onClick={handleReset}>
+        <button
+          className="rounded-md border-2 border-gray-400 px-3.5 py-2.5 text-sm font-semibold text-gray-400 shadow-sm hover:border-gray-500 hover:text-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 w-full"
+          type="button"
+          onClick={handleReset}
+        >
           Reset
         </button>
       </div>

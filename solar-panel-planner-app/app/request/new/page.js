@@ -15,6 +15,10 @@ const initialFormData = {
 const Request = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
+  const showSuccessMessage = () => {
+    setShowSuccess(true);
+  };
+
   return (
     <>
       {showSuccess ? (
@@ -28,6 +32,7 @@ const Request = () => {
           </p>
           <RequestForm
             initialFormData={initialFormData}
+            showSuccessMessage={showSuccessMessage}
           />
         </div>
       )}
