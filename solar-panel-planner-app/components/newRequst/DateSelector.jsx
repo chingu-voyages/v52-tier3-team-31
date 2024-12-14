@@ -42,7 +42,6 @@ const DateSelector = ({
     setSelectedDate(e.target.value);
     setSelectedSlot(null);
   };
-  console.log("selected date", selectedDate);
 
   const handleSelectedSlot = (slot) => {
     setSelectedSlot(slot);

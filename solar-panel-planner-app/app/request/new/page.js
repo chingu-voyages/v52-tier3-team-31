@@ -13,18 +13,18 @@ const initialFormData = {
 };
 
 const Request = () => {
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [submittedRequestId, setSubmittedRequestId] = useState(null);
 
-  const showSuccessMessage = () => {
-    setShowSuccess(true);
+  const showSuccessMessage = (requestId) => {
+    setSubmittedRequestId(requestId);
   };
 
   return (
-    <>
-      {showSuccess ? (
-        <NewRequestSuccess />
+    <div>
+      {submittedRequestId ? (
+        <NewRequestSuccess requestId={submittedRequestId} />
       ) : (
-        <div className="w-[90%] max-w-[40vw] mx-auto mt-10 mb-10">
+        <div className="w-[90%] max-w-xl mx-auto mt-10 mb-10">
           <h1 className="section-heading">New Evaluation Request</h1>
           <p className="page-subheading">
             Please fill your details below and provide a preferred time slot for
@@ -36,7 +36,7 @@ const Request = () => {
           />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

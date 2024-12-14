@@ -2,11 +2,9 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import DateSelector from "@/components/newRequst/DateSelector";
-import { toast } from "react-toastify";
 import axios from "axios";
 import { createRequest, updateRequestById } from "@/app/actions/requestActions";
 import dayjs from "dayjs";
-import NewRequestSuccess from "../newRequst/NewRequestSuccess";
 
 const RequestForm = ({ initialFormData, showSuccessMessage }) => {
   const [formData, setFormData] = useState(initialFormData);
@@ -17,8 +15,6 @@ const RequestForm = ({ initialFormData, showSuccessMessage }) => {
   );
   const [errors, setErrors] = useState({});
   const [suggestions, setSuggestions] = useState([]);
-
-  const route = useRouter();
 
   const handleReset = () => {
     setFormData(initialFormData);
@@ -108,14 +104,12 @@ const RequestForm = ({ initialFormData, showSuccessMessage }) => {
 
     if (isValid) {
       try {
-        initialFormData?.requestedDate
+        let request = initialFormData?.requestedDate
           ? await updateRequestById(initialFormData?._id, updatedFormData)
           : await createRequest(updatedFormData);
 
         handleReset();
-        showSuccessMessage();
-        // route.push("/");
-        // toast("Your request has been submitted!");
+        showSuccessMessage(request.data._id);
       } catch (error) {
         console.log("Failed to create request", error.message);
       }
@@ -146,7 +140,7 @@ const RequestForm = ({ initialFormData, showSuccessMessage }) => {
             value={formData?.name}
             onChange={handleFormChange}
           />
-          {errors.name && <p className="">{errors.name}</p>}
+          {errors.name && <p className="text-red-500">{errors.name}</p>}
         </div>
         <div className="form-box">
           <p className="form-label">Email Address</p>
@@ -158,7 +152,7 @@ const RequestForm = ({ initialFormData, showSuccessMessage }) => {
             onChange={handleFormChange}
             readOnly={initialFormData?.email}
           />
-          {errors.email && <p className="">{errors.email}</p>}
+          {errors.email && <p className="text-red-500">{errors.email}</p>}
         </div>
         <div>
           <p className="form-label">Phone Number</p>
@@ -169,7 +163,7 @@ const RequestForm = ({ initialFormData, showSuccessMessage }) => {
             value={formData?.phone}
             onChange={handleFormChange}
           />
-          {errors.phone && <p className="">{errors.phone}</p>}
+          {errors.phone && <p className="text-red-500">{errors.phone}</p>}
         </div>
       </div>
       <div className="form-section">
@@ -195,7 +189,7 @@ const RequestForm = ({ initialFormData, showSuccessMessage }) => {
               ))}
             </ul>
           )}
-          {errors.address && <p className="">{errors.address}</p>}
+          {errors.address && <p className="text-red-500">{errors.address}</p>}
         </div>
       </div>
       <div className="form-section form-box">
