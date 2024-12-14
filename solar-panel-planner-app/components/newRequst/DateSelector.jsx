@@ -4,10 +4,18 @@ import dayjs from "dayjs";
 import { getBookedTimeSlots } from "@/app/actions/planningActions";
 import { timeSlots } from "@/utils/timesSlots";
 
-const DateSelector = ({ onDateSlotConfirm }) => {
+const DateSelector = ({
+  onDateSlotConfirm,
+  initialSelectedDate,
+  initialSelectedSlot,
+}) => {
   const [bookedSlots, setBookedSlots] = useState({});
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(initialSelectedDate || "");
+  const [selectedSlot, setSelectedSlot] = useState(
+    initialSelectedSlot
+      ? timeSlots.find((slot) => slot.start === initialSelectedSlot)
+      : null
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -95,13 +103,11 @@ const DateSelector = ({ onDateSlotConfirm }) => {
       )}
 
       {selectedSlot && (
-        <div>
-          <h4>
-            Selected Slot: {""}
-            {
-              timeSlots.find((slot) => slot.start === selectedSlot.start)?.label
-            }{" "}
-            on {dayjs(selectedDate.start).format("MM/DD/YYYY")}
+        <div className="flex flex-col gap-1">
+          <p className="form-label">Selected Slot </p>
+          <h4 className="font-bold bg-white text-gray-800 p-2 rounded-md">
+            {timeSlots.find((slot) => slot.start === selectedSlot.start)?.label}{" "}
+            on {dayjs(selectedDate).format("dddd D MMMM YYYY")}
           </h4>
         </div>
       )}
