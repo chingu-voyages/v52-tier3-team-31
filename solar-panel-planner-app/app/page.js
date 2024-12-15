@@ -4,7 +4,7 @@ import Testimonials from "@/components/home/Testimonials";
 
 export default function Home() {
   return (
-    <div className="mx-auto 2xl:max-w-[80%] 2xl:px-8">
+    <div className="mx-auto ">
       <HeroSection />
       <HowItWorks />
       <Testimonials />
