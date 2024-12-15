@@ -51,7 +51,7 @@ const DateSelector = ({
     }
   };
 
-  const todaysDate = dayjs().format("YYYY-MM-DD");
+  const tomorrowsDate = dayjs().add(1, "day").format("YYYY-MM-DD");
 
   const isSlotBooked = (date, start) => {
     const bookedHours = bookedSlots[dayjs(date).format("MM/DD/YYYY")] || [];
@@ -65,7 +65,7 @@ const DateSelector = ({
         type="date"
         value={selectedDate}
         onChange={handleDateChange}
-        min={todaysDate}
+        min={tomorrowsDate}
         className="form-field"
       />
 
