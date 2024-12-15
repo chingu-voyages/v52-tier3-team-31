@@ -29,9 +29,10 @@ const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
         return (
           <div
             key={idx}
-            className="flex justify-start items-center gap-10 bg-gray-50 p-4"
+            className="flex flex-col sm:flex-row sm:items-center justify-start gap-4 bg-gray-50 p-4"
           >
             <div
+              className="w-24 "
               onMouseEnter={() => setIsHovered(idx)}
               onMouseLeave={() => setIsHovered(null)}
             >

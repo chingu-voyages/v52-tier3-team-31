@@ -12,7 +12,6 @@ import {
 } from "@/app/actions/requestActions";
 import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import PlanningMapView from "@/components/planning/PlanningMapView";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { showConfirmationBtn } from "./rules";
 
@@ -57,15 +56,14 @@ const planShortestRoute = (appointments, startPoint) => {
   return plannedRoute;
 };
 
-const Planning = () => {
-  const router = useRouter();
-
+const page = () => {
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format("MM/DD/YYYY")
   );
   const [allPlannedRequests, setAllPlannedRequest] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
+
   useEffect(() => {
     let imageData = sessionStorage.getItem("map-image");
     if (imageData) {
@@ -92,7 +90,6 @@ const Planning = () => {
     };
     getAllRequestsData();
   }, [selectedDate]);
-  console.log("all appointment", allPlannedRequests);
 
   const generateDates = () => {
     const dates = [];
@@ -263,4 +260,4 @@ const Planning = () => {
   );
 };
 
-export default Planning;
+export default page;
