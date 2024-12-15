@@ -77,7 +77,7 @@ export async function getRequestById(requestId) {
 
 
 export async function updateRequestById(requestId, updateData) {
-
+  console.log('updateRequestById called with:', requestId, updateData);
   try {
     const updatedRequest = await Request.findByIdAndUpdate(
       requestId,
