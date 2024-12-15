@@ -4,7 +4,7 @@ import EmailVerificationModal from "../request/EmailVerificationModal";
 const HeroSection = () => {
   return (
     <section id="hero-section" className="max-w-8xl mx-auto mb-12 ">
-      <div className="relative isolate overflow-hidden -inset-y-20 2xl:rounded-xl  2xl:-inset-0 2xl:mt-10">
+      <div className="relative isolate overflow-hidden -inset-y-20 ">
         <Image
           width={0}
           height={0}
@@ -13,7 +13,7 @@ const HeroSection = () => {
           quality={90}
           priority={true}
           src="/images/hero-bg.jpeg"
-          className="absolute inset-0 -z-10 size-full object-cover object-center "
+          className="absolute inset-0 -z-10 size-full object-cover"
         />
         <div className="mx-auto md:ml-12 max-w-7xl px-6 lg:px-8">
           <div className="absolute bg-gradient-to-r from-black from-0% via-black via-70% to-transparent w-2/3 h-full left-0 opacity-60 -z-10" />
