@@ -23,7 +23,7 @@ export async function POST(req) {
     }
     await connectToDatabase();
 
-    const existingRequest = await Request.findOne({ email });
+    const existingRequest = await Request.findOne({ email }).sort({ _id: -1 });
     if (!existingRequest) {
       return new Response(
         JSON.stringify({ error: "No request found for this email" }),

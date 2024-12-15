@@ -7,6 +7,7 @@ import PlanningHeader from "@/components/planning/PlanningHeader";
 import Dropdown from "@/components/planning/Dropdown";
 import {
   getAllPlanVisitRequests,
+  updateRequestById,
   updateRequestStatus,
   updateRequestTimeSlot,
 } from "@/app/actions/requestActions";
@@ -14,6 +15,7 @@ import PrimaryBtn from "@/components/buttons/PrimaryBtn";
 import PlanningMapView from "@/components/planning/PlanningMapView";
 import { toast } from "react-toastify";
 import { showConfirmationBtn } from "./rules";
+import { timeSlots } from "@/utils/timesSlots";
 
 const haversineDistance = ([lat1, lon1], [lat2, lon2]) => {
   const toRad = (x) => (x * Math.PI) / 180;
@@ -30,7 +32,7 @@ const haversineDistance = ([lat1, lon1], [lat2, lon2]) => {
   return R * c;
 };
 
-const planShortestRoute = (appointments, startPoint) => {
+const planShortestRoute = (appointments, startPoint, selectedDate) => {
   const plannedRoute = [];
   let currentPoint = startPoint || appointments[0];
   const unvisited = [...appointments];
@@ -53,7 +55,29 @@ const planShortestRoute = (appointments, startPoint) => {
     currentPoint = nearest.appointment;
   }
 
-  return plannedRoute;
+  const today = dayjs(selectedDate, "MM/DD/YYYY").startOf("day");
+  const updatedPlannedRoute = plannedRoute.map((appointment, index) => {
+    const timeSlot = timeSlots[index];
+    if (!timeSlot) {
+      console.warn(`No available time slot for appointment ${appointment._id}`);
+      return appointment; 
+    }
+    const [hours, minutes] = timeSlot.start.split(":").map(Number);
+    const updatedDateTime = today
+      .hour(hours)
+      .minute(minutes)
+      .second(0)
+      .millisecond(0)
+      .toISOString();
+
+    return {
+      ...appointment,
+      requestedDate: updatedDateTime,
+      scheduledDate: updatedDateTime,
+    };
+  });
+
+  return updatedPlannedRoute;
 };
 
 const page = () => {
@@ -79,10 +103,10 @@ const page = () => {
 
       const hasNewRequest = filtered.some((req) => req.status === "new");
 
-      if (hasNewRequest) {
-        const startPoint = filtered[0];
-        const plannedRoute = planShortestRoute(filtered, startPoint);
-
+      if(hasNewRequest){
+        const startPoint = filtered[0]; 
+        const plannedRoute = planShortestRoute(filtered, startPoint, selectedDate);
+  
         setAllPlannedRequest(plannedRoute);
       } else {
         setAllPlannedRequest(filtered);
@@ -173,10 +197,16 @@ const page = () => {
     try {
       const updatedRequests = await Promise.all(
         allPlannedRequests
-          .filter((req) => req.status !== "scheduled")
-          .map((request) => updateRequestStatus(request._id, "scheduled"))
+          .map((request) => {
+            console.log('the data in confirmation', request)
+            return updateRequestById(request._id, {
+              ...request,
+              status: 'scheduled'
+            })
+          })
       );
       const successfulUpdates = updatedRequests.filter((res) => !res.error);
+      console.log('the successfulUpdates', successfulUpdates)
 
       if (successfulUpdates.length > 0) {
         await sendConfirmationEmail(successfulUpdates);

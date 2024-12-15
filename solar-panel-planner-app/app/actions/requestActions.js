@@ -62,12 +62,33 @@ export async function getAllRequests() {
 
 // Return a single request using the given ID
 export async function getRequestById(requestId) {
+  console.log('the data backend', requestId)
   try {
     let request = await Request.findById(requestId);
     if (request) {
       return { data: request };
     } else {
       return { error: "No Request found for this ID" };
+    }
+  } catch (error) {
+    return { error: error.message };
+  }
+}
+
+
+export async function updateRequestById(requestId, updateData) {
+  console.log('updateRequestById called with:', requestId, updateData);
+  try {
+    const updatedRequest = await Request.findByIdAndUpdate(
+      requestId,
+      { $set: updateData }, 
+      { new: true, runValidators: true }
+    );
+
+    if (updatedRequest) {
+      return { data: updatedRequest };
+    } else {
+      return { error: "No Request found for this ID to update" };
     }
   } catch (error) {
     return { error: error.message };
