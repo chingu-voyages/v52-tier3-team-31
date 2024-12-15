@@ -3,6 +3,7 @@ import RequestCard from "../request/RequestCard";
 import dayjs from "dayjs";
 import { timeSlots } from "@/utils/timesSlots";
 import Dropdown from "./Dropdown";
+import { FaCalendarXmark } from "react-icons/fa6";
 
 const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
   const [isHovered, setIsHovered] = useState(null);
@@ -16,14 +17,22 @@ const PlanningCards = ({ allPlannedRequests, rescheduleSelectedTimeSlot }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {allPlannedRequests.length === 0 && <h1>No Request!</h1>}
+      {allPlannedRequests.length === 0 && (
+        <div className="flex flex-col gap-10 mx-auto items-center mt-20 ">
+          <FaCalendarXmark size={70} />
+          <h1 className="text-2xl">
+            No inspection requests found for this date.
+          </h1>
+        </div>
+      )}
       {allPlannedRequests.map((request, idx) => {
         return (
           <div
             key={idx}
-            className="flex  items-center justify-between gap-10 bg-gray-50 p-4 "
+            className="flex flex-col sm:flex-row sm:items-center justify-start gap-4 bg-gray-50 p-4"
           >
             <div
+              className="w-24 "
               onMouseEnter={() => setIsHovered(idx)}
               onMouseLeave={() => setIsHovered(null)}
             >

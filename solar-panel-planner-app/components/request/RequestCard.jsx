@@ -8,15 +8,14 @@ const borderStatusColors = {
 };
 
 const RequestCard = ({ request }) => {
-  const { name, email, phone, address, requestedDate, scheduledDate, status } =
-    request;
+  const { name, email, phone, address, scheduledDate, status } = request;
 
   return (
     <Link
       href={`/request/${request._id}`}
-      className={`overflow-hidden rounded-lg bg-white shadow-md border-l-8  ${borderStatusColors[status]} transition-transform hover:scale-105`}
+      className={`overflow-hidden rounded-lg bg-white shadow-md border-l-8  ${borderStatusColors[status]} transition-transform hover:scale-[102%] flex-1`}
     >
-      <div className="px-5 py-4 border-b bg-gray-50 flex justify-between items-center">
+      <div className="px-5 py-4 border-b bg-gray-100 flex justify-between items-center">
         <div className="flex items-center gap-2 text-lg font-semibold">
           📅 <span>{dayjs(scheduledDate).format("ddd D MMM YYYY hh:mmA")}</span>
         </div>
@@ -34,8 +33,8 @@ const RequestCard = ({ request }) => {
           {status}
         </span>
       </div>
-      <div className="px-5 py-6">
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <div className="px-5 py-6 ">
+        <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
           <div className="flex items-center gap-2">
             <span className="text-gray-500 text-xl">👤</span>
             <span className="text-gray-800 font-medium">{name}</span>

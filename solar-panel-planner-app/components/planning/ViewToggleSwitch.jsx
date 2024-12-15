@@ -20,16 +20,20 @@ const ViewToggleSwitch = ({ handleViewSwitch }) => {
           onChange={handleCheckboxChange}
         />
         <span
-          className={`flex items-center  rounded py-2 px-[18px] text-sm font-medium hover:bg-gray-50 ${
-            !showMap ? "text-white bg-primary-dark" : "text-primary-dark"
+          className={`flex items-center  rounded py-2 px-[18px] text-sm font-medium  ${
+            !showMap
+              ? "text-white bg-primary-dark"
+              : "text-primary-dark hover:bg-gray-50"
           }`}
         >
           <FaList className="mr-2" />
           List
         </span>
         <span
-          className={`flex items-center space-x-[6px] rounded py-2 px-[18px] text-sm font-medium hover:bg-gray-50  ${
-            showMap ? "text-white bg-primary-dark" : "text-primary-dark"
+          className={`flex items-center space-x-[6px] rounded py-2 px-[18px] text-sm font-medium   ${
+            showMap
+              ? "text-white bg-primary-dark"
+              : "text-primary-dark hover:bg-gray-50"
           }`}
         >
           <FaMapMarked className="mr-2" />
