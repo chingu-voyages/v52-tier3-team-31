@@ -27,7 +27,7 @@ const HeroSection = () => {
               </h1>
               <p className="mt-8 max-w-md text-pretty text-lg font-medium text-gray-100 sm:text-xl/8">
                 Schedule your solar panel evaluation with ease, and let us
-                handle the rest. Join Los Angeles' mission to embrace
+                handle the rest. Join Los Angeles&apos; mission to embrace
                 sustainable energy today!
                 <a
                   href="#how-it-works-section"

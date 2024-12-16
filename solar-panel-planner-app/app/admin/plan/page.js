@@ -60,7 +60,7 @@ const planShortestRoute = (appointments, startPoint, selectedDate) => {
     const timeSlot = timeSlots[index];
     if (!timeSlot) {
       console.warn(`No available time slot for appointment ${appointment._id}`);
-      return appointment; 
+      return appointment;
     }
     const [hours, minutes] = timeSlot.start.split(":").map(Number);
     const updatedDateTime = today
@@ -80,7 +80,7 @@ const planShortestRoute = (appointments, startPoint, selectedDate) => {
   return updatedPlannedRoute;
 };
 
-const page = () => {
+const Page = () => {
   const [selectedDate, setSelectedDate] = useState(
     dayjs().format("MM/DD/YYYY")
   );
@@ -103,10 +103,14 @@ const page = () => {
 
       const hasNewRequest = filtered.some((req) => req.status === "new");
 
-      if(hasNewRequest){
-        const startPoint = filtered[0]; 
-        const plannedRoute = planShortestRoute(filtered, startPoint, selectedDate);
-  
+      if (hasNewRequest) {
+        const startPoint = filtered[0];
+        const plannedRoute = planShortestRoute(
+          filtered,
+          startPoint,
+          selectedDate
+        );
+
         setAllPlannedRequest(plannedRoute);
       } else {
         setAllPlannedRequest(filtered);
@@ -196,17 +200,16 @@ const page = () => {
     setIsLoading(true);
     try {
       const updatedRequests = await Promise.all(
-        allPlannedRequests
-          .map((request) => {
-            console.log('the data in confirmation', request)
-            return updateRequestById(request._id, {
-              ...request,
-              status: 'scheduled'
-            })
-          })
+        allPlannedRequests.map((request) => {
+          console.log("the data in confirmation", request);
+          return updateRequestById(request._id, {
+            ...request,
+            status: "scheduled",
+          });
+        })
       );
       const successfulUpdates = updatedRequests.filter((res) => !res.error);
-      console.log('the successfulUpdates', successfulUpdates)
+      console.log("the successfulUpdates", successfulUpdates);
 
       if (successfulUpdates.length > 0) {
         await sendConfirmationEmail(successfulUpdates);

@@ -24,7 +24,7 @@ const RequestList = async ({ query, currentPage, limit }) => {
             <h1 className="text-lg text-center">
               Found <strong>{filteredRequests.totalResults}</strong>{" "}
               {filteredRequests.totalResults > 1 ? "results " : "result "}
-              for "<strong>{query}</strong>"
+              for &ldquo;<strong>{query}</strong>&rdquo;
             </h1>
           )}
           <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 px-4 py-8 lg:px-28 2xl:px-40 ">
