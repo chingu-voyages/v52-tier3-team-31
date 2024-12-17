@@ -1,6 +1,6 @@
-# BrightGrid ☀️
+# ☀️ BrightGrid
 ![BrightGrid](https://github.com/chingu-voyages/v52-tier3-team-31/blob/main/brightgrid-home.png?raw=true) 
-
+### Live Demo : [BrightGrid](https://bright-grid.vercel.app/)
 BrightGrid is a full-stack web application designed to facilitate Los Angeles residents in scheduling solar panel evaluation visits while enabling city hall employees to manage and optimize these visits efficiently. Residents can submit requests with validated addresses and preferred times, and receive notifications regarding their appointments. The app includes an admin interface for authorized employees to view, plan, and export visit schedules, supported by route optimization and tracking features.
 
 ## Features
@@ -16,13 +16,9 @@ BrightGrid is a full-stack web application designed to facilitate Los Angeles re
 
 ## Tech Stack
 
-**Frontend**:  
 - [Next.js](https://nextjs.org)  
 - [React.js](https://reactjs.org)  
 - [Tailwind CSS](https://tailwindcss.com)  
-
-**Backend**:  
-- [Node.js](https://nodejs.org)  
 - [Mongoose](https://mongoosejs.com)  
 
 **Other Tools**:  
@@ -36,7 +32,7 @@ BrightGrid is a full-stack web application designed to facilitate Los Angeles re
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/solar-panel-planner-app.git
+   git clone https://github.com/chingu-voyages/v52-tier3-team-31.git
    cd solar-panel-planner-app
    ```
 2. **Install dependencies**:
